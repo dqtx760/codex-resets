@@ -1,0 +1,1529 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#fff4dd" />
+<title>Codex 额度重置追踪与历史记录 | Codex Resets</title>
+<meta name="description" content="追踪最新的 OpenAI Codex 额度重置，查看重置历史，并在新重置公布时收到通知。" />
+<link rel="icon" href="avatar.jpg" type="image/jpeg" />
+<style>
+@font-face{font-family:"Baloo 2";font-style:normal;font-weight:700;font-display:optional;src:url(https://codex-resets.com/fonts/Baloo2-Bold.woff2) format("woff2")}
+@font-face{font-family:"Baloo 2";font-style:normal;font-weight:800;font-display:optional;src:url(https://codex-resets.com/fonts/Baloo2-ExtraBold.woff2) format("woff2")}
+@font-face{font-family:"GenSen Rounded";font-style:normal;font-weight:700;font-display:swap;src:url(https://codex-resets.com/fonts/GenSenRounded-Bold-UI.woff2) format("woff2")}
+@font-face{font-family:"GenSen Rounded";font-style:normal;font-weight:800;font-display:swap;src:url(https://codex-resets.com/fonts/GenSenRounded-Heavy-UI.woff2) format("woff2")}
+:root{--paper:#fff4dd;--ink:#26201a;--ink-2:#5c5347;--ink-3:#877b6b;--accent:#ff5c2b;--sun:#ffd84d;--watch-paper:#fff0bd;--rose:#ffb9cc;--sky:#a5dcff;--peach:#ffb07a;--card:#fffdf7;--cg-empty:#f1e3c4;--cg-fill:var(--accent);--cg-banked:var(--peach);--accent-hover:#ee4518;--sun-hover:#ffe070;--on-accent:var(--card);--on-sun:var(--ink);--on-rose:var(--ink);--on-sky:var(--ink);--banked-copy:#8b3d1f;--watch-copy:#675015;--dot-ink:#26201a1a;--shadow-ink:var(--ink);--border:2px solid var(--ink);--shadow:4px 4px 0 var(--shadow-ink);--shadow-sm:3px 3px 0 var(--shadow-ink);--radius:14px;--font-display:"Baloo 2","Arial Rounded MT Bold",system-ui,sans-serif;--font-body:system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;--font-mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;--cell-size:22px}
+[data-theme=dark]{--paper:oklch(18% .012 70);--ink:oklch(93% .025 80);--ink-2:oklch(76% .025 75);--ink-3:oklch(66% .024 72);--accent:oklch(67% .2 38);--sun:oklch(75% .135 82);--watch-paper:oklch(30% .055 72);--rose:oklch(70% .12 355);--sky:oklch(71% .095 232);--peach:oklch(78% .12 48);--card:oklch(24% .014 70);--cg-empty:oklch(35% .022 75);--cg-banked:var(--peach);--accent-hover:oklch(62% .2 38);--sun-hover:oklch(79% .14 82);--on-accent:oklch(20% .03 38);--on-sun:oklch(22% .04 82);--on-rose:oklch(20% .03 350);--on-sky:oklch(20% .03 235);--banked-copy:var(--peach);--watch-copy:oklch(86% .09 82);--dot-ink:#f6e8cf14;--shadow-ink:oklch(8% .005 70);--shadow-soft:#0302028c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased}
+.page{max-width:760px;margin:0 auto;padding:0 20px 80px}
+.masthead{display:flex;align-items:center;gap:16px;padding:34px 0 4px;position:relative}
+.masthead-brand{display:flex;align-items:center;gap:14px;min-width:0}
+.masthead-avatar{border:var(--border);width:44px;height:44px;box-shadow:var(--shadow-sm);border-radius:50%;transform:rotate(-4deg);flex:none}
+.masthead-title{font-family:var(--font-display);letter-spacing:-.01em;margin:0;font-size:clamp(26px,4.5vw,34px);font-weight:800;line-height:1.05}
+.masthead-side{margin-left:auto;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.lang-wrap{position:relative}
+.language-toggle,.x-link,.theme-toggle{width:40px;height:40px;color:var(--ink);cursor:pointer;background:0 0;border:0;border-radius:50%;flex:0 0 40px;place-items:center;padding:0;display:inline-grid;position:relative;transition:transform .1s}
+.language-toggle:before,.x-link:before,.theme-toggle:before{content:"";box-sizing:border-box;border:var(--border);background:var(--card);box-shadow:1px 1px 0 var(--shadow-ink);border-radius:50%;position:absolute;inset:5px;pointer-events:none}
+.language-toggle:active,.x-link:active,.theme-toggle:active{transform:translate(2px,2px)}
+.language-toggle:active:before,.x-link:active:before,.theme-toggle:active:before{box-shadow:0 0 0 var(--shadow-ink)}
+.language-toggle:hover,.x-link:hover,.theme-toggle:hover{transform:translate(-1px,-1px)}
+.language-toggle:hover:before,.x-link:hover:before,.theme-toggle:hover:before{box-shadow:2px 2px 0 var(--shadow-ink)}
+.language-toggle svg,.x-link svg,.theme-toggle svg{width:20px;height:20px;z-index:1;fill:none;stroke:currentColor;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round}
+.language-menu{position:absolute;top:46px;right:0;background:var(--card);border:var(--border);box-shadow:var(--shadow-sm);border-radius:12px;padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:20}
+.language-menu[popover]:not(:popover-open){display:none}
+.language-menu a{font-family:var(--font-body);color:var(--ink);text-decoration:none;padding:8px 12px;border-radius:8px;font-size:14px}
+.language-menu a:hover{background:var(--sun)}
+.language-menu a[aria-current=page]{font-weight:800;background:var(--sun)}
+.theme-toggle-icon{fill:none;stroke:currentColor;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round;width:18px;height:18px;position:absolute;inset:0;transition:opacity .12s,transform .12s}
+.theme-toggle-icons{position:relative;width:18px;height:18px;z-index:1;display:block}
+.theme-toggle-icon--moon{opacity:1;transform:scale(1)}
+.theme-toggle-icon--sun{opacity:0;transform:scale(.75)}
+[data-theme=dark] .theme-toggle-icon--moon{opacity:0;transform:scale(.75)}
+[data-theme=dark] .theme-toggle-icon--sun{opacity:1;transform:scale(1)}
+.hero-explainer{font-size:18px;line-height:1.6;margin:18px 0 18px}
+.hero-explainer a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.hero-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.subscription-actions{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.subscription-action{border:var(--border);min-height:40px;color:var(--ink);box-shadow:var(--shadow-sm);font-family:var(--font-display);cursor:pointer;border-radius:999px;align-items:center;gap:7px;padding:8px 14px;font-size:14px;font-weight:700;line-height:1.2;display:inline-flex;text-decoration:none;background:var(--card)}
+.subscription-action:active{box-shadow:0 0 0 var(--shadow-ink);transform:translate(3px,3px)}
+.telegram-link:hover{background:var(--sky);color:var(--on-sky)}
+.email-toggle:hover{background:var(--rose);color:var(--on-rose)}
+.subscription-action svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2px;stroke-linecap:round;stroke-linejoin:round}
+.push-toggle{background:var(--accent);color:var(--on-accent)}
+.push-toggle:hover{background:var(--accent-hover)}
+.push-toggle svg{fill:currentColor}
+.push-toggle .push-count-dot{width:7px;height:7px;border-radius:50%;background:var(--sun);display:inline-block}
+.time-setting{margin-left:auto;display:flex;flex:none}
+.time-toggle{border:var(--border);background:var(--card);color:var(--ink);font-family:var(--font-display);font-weight:700;font-size:13px;padding:9px 14px;cursor:pointer;line-height:1.2;box-shadow:var(--shadow-sm)}
+.time-toggle:first-child{border-radius:999px 0 0 999px}
+.time-toggle:last-child{border-radius:0 999px 999px 0;border-left-width:0}
+.time-toggle.is-active{background:var(--sun);color:var(--on-sun)}
+.time-toggle:not(.is-active):hover{background:var(--rose);color:var(--on-rose)}
+.scheduled-card{background:var(--watch-paper);border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.scheduled-card .sc-label{font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;font-size:11px;color:var(--watch-copy);font-weight:700}
+.scheduled-card .sc-main{font-family:var(--font-display);font-weight:800;font-size:20px;margin-top:2px}
+.scheduled-card a{color:var(--accent);font-weight:800;text-decoration:none;font-family:var(--font-display)}
+.hero-card{background:var(--card);background-image:radial-gradient(var(--dot-ink) 1.5px,transparent 1.5px);border:var(--border);border-radius:var(--radius);box-shadow:6px 6px 0 var(--shadow-ink);background-size:18px 18px;padding:24px 26px 28px;transform:rotate(-.4deg);display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"label label" "figure plea" "footer footer";gap:14px 32px}
+.hero-label{grid-area:label;font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:0;font-size:12px;display:block}
+.hero-figure{grid-area:figure;justify-self:start;font-family:var(--font-display);letter-spacing:-.02em;color:var(--on-sun);background:var(--sun);border-radius:10px;padding:0 14px 4px;font-size:clamp(40px,7.5vw,64px);font-weight:800;line-height:1.1;display:inline-block;transform:rotate(-1.2deg)}
+.hero-footer{grid-area:footer;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+.hero-sub{margin:0;font-size:14px;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hero-sub strong{color:var(--banked-copy);font-family:var(--font-display)}
+.reset-plea{display:flex;align-items:center}
+.reset-plea-action{position:relative;display:inline-flex}
+.reset-plea-bursts{position:absolute;left:50%;top:-4px;pointer-events:none;z-index:5}
+.reset-plea-burst{position:absolute;bottom:0;pointer-events:none;animation:reset-plea-burst .9s ease-out forwards}
+@keyframes reset-plea-burst{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--dx,0),-56px) scale(1.15)}}
+@keyframes reset-plea-hands{0%{transform:rotate(0) scale(1)}40%{transform:rotate(-14deg) scale(1.3)}100%{transform:rotate(0) scale(1)}}
+.reset-plea-button.is-pleading .reset-plea-button-emoji{animation:.26s cubic-bezier(.34,1.56,.64,1) reset-plea-hands}
+.reset-plea-button{border:var(--border);background:var(--sun);min-height:34px;box-shadow:2px 2px 0 var(--shadow-ink);color:var(--on-sun);font-family:var(--font-display);cursor:pointer;touch-action:manipulation;user-select:none;border-radius:10px;justify-content:center;align-items:center;gap:5px;padding:6px 12px;font-size:13px;font-weight:800;line-height:1;display:inline-flex;transition:transform 80ms,box-shadow 80ms,background .15s}
+.reset-plea-button:hover{background:var(--sun-hover)}
+.reset-plea-button:active{box-shadow:1px 1px 0 var(--shadow-ink);transform:translate(2px,2px)}
+.reset-plea-button-emoji{font-size:16px;display:inline-block}
+.reset-plea-count{font-variant-numeric:tabular-nums}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}
+.stat-tile{border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 18px 16px;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.stat-tile--sun{background:var(--sun);color:var(--on-sun);transform:rotate(-1deg)}
+.stat-tile--rose{background:var(--rose);color:var(--on-rose);transform:rotate(.8deg)}
+.stat-tile--sky{background:var(--sky);color:var(--on-sky);transform:rotate(-.6deg)}
+.stat-tile:hover{transform:rotate(0) translateY(-3px)}
+.stat-tile dt{font-family:var(--font-mono);letter-spacing:.04em;text-transform:uppercase;color:currentColor;opacity:.75;margin:0 0 4px;font-size:11px}
+.stat-tile dd{font-family:var(--font-display);color:currentColor;white-space:nowrap;margin:0;font-size:30px;font-weight:700;line-height:1.1}
+.sponsor-mobile{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:8px 0 30px}
+.sponsor-card{border:var(--border);border-radius:var(--radius);background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm);text-align:left;gap:10px;padding:12px;display:flex;align-items:center;text-decoration:none;transition:transform .14s,box-shadow .14s;position:relative;overflow:hidden}
+.sponsor-card:hover{color:var(--ink);box-shadow:5px 5px 0 var(--shadow-ink);transform:translate(-1px,-1px)}
+.sponsor-label{position:absolute;top:6px;right:10px;font-family:var(--font-mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.sponsor-logo{flex:0 0 34px;width:34px;height:34px}
+.sponsor-logo img{width:34px;height:34px;border-radius:9px;display:block}
+.sponsor-emoji{display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--sun);border:var(--border);border-radius:9px}
+.sponsor-copy{display:flex;flex-direction:column;min-width:0}
+.sponsor-copy strong{font-family:var(--font-display);font-size:14px}
+.sponsor-copy span{font-size:12px;color:var(--ink-2);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.sponsor-logo img{width:34px;height:34px;border-radius:9px;display:block}
+.sponsor-copy{display:flex;flex-direction:column;min-width:0}
+.sponsor-copy strong{font-family:var(--font-display);font-size:14px}
+.sponsor-copy span{font-size:12px;color:var(--ink-2);line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:34px 0 14px}
+.section-head h2{font-family:var(--font-display);font-size:24px;margin:0}
+.section-sub{color:var(--ink-3);font-size:13px;margin:0;display:flex;gap:14px;flex-wrap:wrap}
+.legend-item{display:inline-flex;align-items:center;gap:5px;font-size:12px}
+.legend-chip{border:1.5px solid var(--ink);background:var(--cg-empty);vertical-align:-1px;border-radius:3px;width:11px;height:11px;display:inline-block}
+.legend-chip--regular{background:var(--cg-fill)}
+.legend-chip--banked{background:var(--cg-banked)}
+.graph-card{border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);background:var(--card);padding:16px;overflow:hidden}
+.cg-container{display:flex;gap:6px}
+.cg-weekdays{display:grid;grid-template-rows:20px repeat(7,var(--cell-size));font-size:10px;color:var(--ink-3);font-family:var(--font-mono)}
+.cg-weekday{display:flex;align-items:center}
+.cg-scroll{overflow-x:auto;padding-bottom:6px}
+.cg-grid{display:grid;grid-template-columns:repeat(54,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
+.cg-month{grid-row:1;font-family:var(--font-mono);font-size:10px;color:var(--ink-3);align-self:end}
+.cg-cell{width:var(--cell-size);height:var(--cell-size);background:var(--cg-empty);border:none;border-radius:6px;padding:0;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
+.cg-cell[data-level="1"]{background:var(--cg-fill);border:1.5px solid var(--ink);box-shadow:1.5px 1.5px 0 var(--shadow-ink)}
+.cg-cell[data-reset-type=banked]{background:var(--cg-banked)}
+.cg-cell:hover,.cg-cell:focus-visible{outline:none;transform:scale(1.22)}
+.cg-cell[data-level="1"]:hover{transform:scale(1.25) rotate(6deg)}
+.cg-cell--future{cursor:default;background:0 0}
+.cg-cell--future:hover{transform:none}
+.log-section{margin-top:10px}
+.log-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.log-item{display:flex;align-items:flex-start;gap:12px}
+.log-avatar{border:var(--border);width:40px;height:40px;box-shadow:2px 2px 0 var(--shadow-ink);border-radius:50%;flex:none;margin-top:4px}
+.log-bubble{background:var(--card);border:var(--border);min-width:0;box-shadow:var(--shadow);border-radius:16px;flex:1;padding:14px 18px;position:relative}
+.log-bubble:before{content:"";background:var(--card);border-left:var(--border);border-bottom:var(--border);width:13px;height:13px;position:absolute;top:18px;left:-8px;transform:rotate(45deg)}
+.log-item-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:8px}
+.log-item-time{font-family:var(--font-display);background:var(--sun);color:var(--on-sun);border:1.5px solid var(--ink);border-radius:999px;padding:1px 10px 2px;font-size:14px;font-weight:700;white-space:nowrap}
+.log-item-abs{font-family:var(--font-mono);color:var(--ink-3);font-size:11px}
+.log-item-text{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;color:var(--ink);margin:0;font-size:16px;line-height:1.5}
+.log-item-link{font-family:var(--font-mono);margin-top:10px;font-size:12px;display:inline-block;color:var(--accent);font-weight:700;text-decoration:none}
+.log-more{text-align:center;margin-top:18px}
+.log-more .log-list--more{text-align:left}
+.log-more-toggle{cursor:pointer;font-family:var(--font-display);font-weight:800;color:var(--ink);border:var(--border);box-shadow:var(--shadow-sm);background:var(--card);border-radius:999px;padding:10px 18px;display:inline-flex;align-items:center;gap:8px;list-style:none}
+.log-more-toggle::-webkit-details-marker{display:none}
+.log-more[open] .log-more-label-closed{display:none}
+.log-more:not([open]) .log-more-label-open{display:none}
+.log-more-arrow{transition:transform .2s}
+.log-more[open] .log-more-arrow{transform:rotate(180deg)}
+.log-list--more{margin-top:18px}
+footer.foot{margin-top:50px;text-align:center;color:var(--ink-3);font-size:13px;font-family:var(--font-mono)}
+footer.foot a{color:var(--ink-2)}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:560px){.stat-row{grid-template-columns:1fr;gap:10px}.hero-card{grid-template-columns:1fr;grid-template-areas:"label" "figure" "plea" "footer"}.sponsor-mobile{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){var s="codex-resets-theme";var r=document.documentElement;function ap(t){r.dataset.theme=t;r.style.colorScheme=t;document.querySelectorAll('meta[name=theme-color]').forEach(function(m){m.setAttribute('content',t==='dark'?'#17130f':'#fff4dd')})}var p=null;try{p=localStorage.getItem(s)}catch(e){}ap(p||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('[data-role=theme-toggle]')){var n=r.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem(s,n)}catch(e){}ap(n)}});
+function rel(d){var diff=Date.now()-new Date(d).getTime();var m=Math.floor(diff/60000);if(m<1)return'刚刚';if(m<60)return m+'分钟前';var h=Math.floor(m/60);if(h<24)return h+'小时前';var d2=Math.floor(h/24);if(d2<30)return d2+'天前';var mo=Math.floor(d2/30);return mo+'个月前'}
+function init(){
+document.querySelectorAll('[data-role=relative-time]').forEach(function(el){el.textContent=rel(el.dataset.datetime)});
+var btn=document.querySelector('[data-role=reset-plea-button]');
+if(btn){
+  var countEl=btn.querySelector('[data-role=reset-plea-count]');
+  var base=73983,key='codex-resets-thanks',extra=0;
+  try{extra=parseInt(localStorage.getItem(key)||'0',10)||0}catch(e){}
+  function render(){countEl.textContent=(base+extra).toLocaleString('en-US')}
+  render();
+  btn.addEventListener('click',function(){
+    extra++;try{localStorage.setItem(key,String(extra))}catch(e){}
+    render();
+    btn.classList.remove('is-pleading');void btn.offsetWidth;btn.classList.add('is-pleading');
+    var holder=document.querySelector('[data-role=reset-plea-bursts]');
+    if(holder){for(var i=0;i<3;i++){(function(){var sp=document.createElement('span');sp.className='reset-plea-burst';sp.textContent='🙏';sp.style.left=((Math.random()*70-10))+'px';sp.style.setProperty('--dx',(Math.random()*28-14)+'px');holder.appendChild(sp);setTimeout(function(){sp.remove()},900)})()}}
+  });
+  btn.addEventListener('animationend',function(){btn.classList.remove('is-pleading')});
+}
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
+})();
+</script>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <div class="masthead-brand">
+      <img class="masthead-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <h1 class="masthead-title">Codex Resets</h1>
+    </div>
+    <div class="masthead-side">
+      <div class="lang-wrap">
+        <button class="language-toggle" type="button" popovertarget="language-menu" aria-label="语言" title="语言">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg>
+        </button>
+        <nav class="language-menu" id="language-menu" popover="auto" aria-label="语言">
+          <a href="https://codex-resets.com/" lang="en" hreflang="en" rel="nofollow">English</a>
+          <a href="https://codex-resets.com/zh-CN" lang="zh-CN" hreflang="zh-CN" rel="nofollow" aria-current="page" autofocus>简体中文</a>
+          <a href="https://codex-resets.com/zh-TW" lang="zh-TW" hreflang="zh-TW" rel="nofollow">繁體中文</a>
+          <a href="https://codex-resets.com/ja" lang="ja" hreflang="ja" rel="nofollow">日本語</a>
+          <a href="https://codex-resets.com/ko" lang="ko" hreflang="ko" rel="nofollow">한국어</a>
+        </nav>
+      </div>
+      <a class="x-link" href="https://github.com/dqtx760" target="_blank" rel="noopener noreferrer" title="在 GitHub 关注 dqtx760" aria-label="在 GitHub 关注 dqtx760">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+      </a>
+      <a class="x-link" href="https://x.com/dqtx760" target="_blank" rel="noopener noreferrer" title="在 X 关注 dqtx760" aria-label="在 X 关注 dqtx760">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.23 10.16 22.1 1h-1.87l-6.84 7.96L8.04 1H1.5l8.26 12.03L1.5 23h1.87l7.22-8.4L15.96 23H22.5l-8.27-12.84Zm-2.56 2.97-.83-1.19L4.04 2.43h2.86l5.34 7.64.84 1.19 6.94 9.93h-2.86l-5.49-7.06Z"/></svg>
+      </a>
+      <button class="theme-toggle" type="button" data-role="theme-toggle" aria-label="切换明暗主题" title="切换明暗主题">
+        <span class="theme-toggle-icons" aria-hidden="true">
+          <svg class="theme-toggle-icon theme-toggle-icon--moon" viewBox="0 0 24 24"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg>
+          <svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="当前状态">
+      <p class="hero-explainer">我们帮你关注 <a href="https://x.com/thsottiaux" target="_blank" rel="noopener noreferrer">@thsottiaux</a> 发布的 Codex 重置消息，省得你反复刷推。</p>
+      <div class="hero-toolbar">
+        <div class="subscription-actions" role="group" aria-label="重置通知">
+          <button class="subscription-action push-toggle" type="button" aria-pressed="true" title="Codex 重置时接收浏览器通知">
+            <svg class="push-toggle-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+            <span>浏览器通知已开启</span>
+          </button>
+          <a class="subscription-action telegram-link" href="https://t.me/+Vk17JyylJkdjMmU1" target="_blank" rel="noopener noreferrer" title="在 Telegram 接收同样的通知">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 9.6 14.4M22 2l-7.9 20-4.5-7.6L2 10l20-8Z"/></svg>
+            <span>telegram</span>
+          </a>
+          <button class="subscription-action email-toggle" type="button" title="Codex 重置确认后接收邮件">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3zM3 6l9 7 9-7"/></svg>
+            <span>邮件</span>
+          </button>
+        </div>
+        <div class="time-setting" role="group" aria-label="时间显示">
+          <button class="time-toggle is-active" type="button" aria-pressed="true">Tibo 时间</button>
+          <button class="time-toggle" type="button" aria-pressed="false">本地时间</button>
+        </div>
+      </div>
+
+      <div class="scheduled-card">
+        <div>
+          <div class="sc-label">已安排重置</div>
+          <div class="sc-main">约 9 小时内 · 最晚 9月23日周三 14:59</div>
+        </div>
+        <a href="https://x.com/dqtx760" target="_blank" rel="noopener noreferrer">查看公告 &nearr;</a>
+      </div>
+
+      <div class="hero-card">
+        <span class="hero-label">最近一次 Codex 重置</span>
+        <span class="hero-figure" data-role="relative-time" data-datetime="2026-09-22T18:23:37.000Z"></span>
+        <div class="reset-plea" data-mode="thanks">
+          <div class="reset-plea-action">
+            <button class="reset-plea-button" type="button" data-role="reset-plea-button" aria-label="感谢这次重置" title="感谢这次重置">
+              <span class="reset-plea-button-emoji" aria-hidden="true">🙏</span>
+              <span class="reset-plea-button-label">感谢</span>
+              <span class="reset-plea-count" data-role="reset-plea-count">73,983</span>
+            </button>
+            <span class="reset-plea-bursts" data-role="reset-plea-bursts" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="hero-footer">
+          <p class="hero-sub hero-sub--banked">
+            <strong>备用重置额度</strong><span aria-hidden="true">·</span>
+            <span data-role="absolute-time">9月22日 11:23</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <dl class="stat-row">
+      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">54</dd></div>
+      <div class="stat-tile stat-tile--rose"><dt>平均重置间隔</dt><dd class="mono">7.0天</dd></div>
+      <div class="stat-tile stat-tile--sky"><dt>最长等待</dt><dd class="mono">67.7天</dd></div>
+    </dl>
+
+    <div class="sponsor-mobile" aria-label="推荐工具"><a class="sponsor-card sponsor-card--compact" href="https://apimart.ai/" target="_blank" rel="noopener noreferrer">
+  <span class="sponsor-label">推荐</span>
+  <span class="sponsor-logo sponsor-logo--image"><img src="https://codex-resets.com/apimart.png" alt="" width="36" height="36" loading="lazy" referrerpolicy="no-referrer" /></span>
+  <span class="sponsor-copy"><strong>APIMart.AI</strong><span>官方图像与视频 API — 80% 优惠。GPT-Image-2 每张低至 $0.006。</span></span>
+</a><a class="sponsor-card sponsor-card--compact" href="https://gpt.dqtx.cc/" target="_blank" rel="noopener noreferrer">
+  <span class="sponsor-label">推荐</span>
+  <span class="sponsor-logo sponsor-emoji">📘</span>
+  <span class="sponsor-copy"><strong>codex指南</strong><span>Codex 使用指南与实战技巧合集。</span></span>
+</a><a class="sponsor-card sponsor-card--compact" href="https://ai.dqtx.cc/" target="_blank" rel="noopener noreferrer">
+  <span class="sponsor-label">推荐</span>
+  <span class="sponsor-logo sponsor-emoji">💳</span>
+  <span class="sponsor-copy"><strong>GPT 代充</strong><span>GPT 会员低价代充值，稳定到账。</span></span>
+</a><a class="sponsor-card sponsor-card--compact" href="https://77.dqtx.cc/" target="_blank" rel="noopener noreferrer">
+  <span class="sponsor-label">推荐</span>
+  <span class="sponsor-logo sponsor-emoji">✨</span>
+  <span class="sponsor-copy"><strong>魔法</strong><span>稳定好用的魔法上网工具推荐。</span></span>
+</a></div>
+
+    <section class="graph-section" aria-labelledby="graph-heading">
+      <div class="section-head">
+        <h2 id="graph-heading">Codex 重置历史</h2>
+        <p class="section-sub graph-legend">
+          <span class="legend-item"><span class="legend-chip legend-chip--regular"></span> 常规</span>
+          <span class="legend-item"><span class="legend-chip legend-chip--banked"></span> 备用</span>
+          <span class="legend-item"><span class="legend-chip"></span> 未重置</span>
+        </p>
+      </div>
+      <div class="graph-card">
+        <div class="cg-container">
+          <div class="cg-weekdays" style="grid-template-rows:20px repeat(7,var(--cell-size))"><span class="cg-weekday" style="grid-row:2"></span><span class="cg-weekday" style="grid-row:3">周一</span><span class="cg-weekday" style="grid-row:4"></span><span class="cg-weekday" style="grid-row:5">周三</span><span class="cg-weekday" style="grid-row:6"></span><span class="cg-weekday" style="grid-row:7">周五</span><span class="cg-weekday" style="grid-row:8"></span></div>
+          <div class="cg-scroll">
+            <div class="cg-grid" style="grid-template-columns:repeat(54,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
+              <span class="cg-month" style="grid-column:1 / span 2;grid-row:1">9月</span>
+          <span class="cg-month" style="grid-column:4 / span 3;grid-row:1">10月</span>
+          <span class="cg-month" style="grid-column:8 / span 4;grid-row:1">11月</span>
+          <span class="cg-month" style="grid-column:13 / span 3;grid-row:1">12月</span>
+          <span class="cg-month" style="grid-column:17 / span 3;grid-row:1">1月</span>
+          <span class="cg-month" style="grid-column:21 / span 3;grid-row:1">2月</span>
+          <span class="cg-month" style="grid-column:25 / span 4;grid-row:1">3月</span>
+          <span class="cg-month" style="grid-column:30 / span 3;grid-row:1">4月</span>
+          <span class="cg-month" style="grid-column:34 / span 4;grid-row:1">5月</span>
+          <span class="cg-month" style="grid-column:39 / span 3;grid-row:1">6月</span>
+          <span class="cg-month" style="grid-column:43 / span 3;grid-row:1">7月</span>
+          <span class="cg-month" style="grid-column:47 / span 4;grid-row:1">8月</span>
+          <span class="cg-month" style="grid-column:52 / span 2;grid-row:1">9月</span>
+              <button type="button" class="cg-cell" data-level="0" data-date="2025-09-14" style="grid-column:1;grid-row:2" aria-label="2025-09-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-15" style="grid-column:1;grid-row:3" aria-label="2025-09-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-16" style="grid-column:1;grid-row:4" aria-label="2025-09-16：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-09-17" style="grid-column:1;grid-row:5" title="我们已经为 gpt-5-codex 重置了所有人的使用限制，以便你们今天都能从中获益更多，同时也作为对我们之前配备额外 GPU 时速度变慢的补偿。我们将在本周内继续增加容量以保持速度。尽情享用吧！" href="https://x.com/thsottiaux/status/1968163721034994139" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-18" style="grid-column:1;grid-row:6" aria-label="2025-09-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-19" style="grid-column:1;grid-row:7" aria-label="2025-09-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-20" style="grid-column:1;grid-row:8" aria-label="2025-09-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-21" style="grid-column:2;grid-row:2" aria-label="2025-09-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-22" style="grid-column:2;grid-row:3" aria-label="2025-09-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-23" style="grid-column:2;grid-row:4" aria-label="2025-09-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-24" style="grid-column:2;grid-row:5" aria-label="2025-09-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-25" style="grid-column:2;grid-row:6" aria-label="2025-09-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-26" style="grid-column:2;grid-row:7" aria-label="2025-09-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-27" style="grid-column:2;grid-row:8" aria-label="2025-09-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-28" style="grid-column:3;grid-row:2" aria-label="2025-09-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-29" style="grid-column:3;grid-row:3" aria-label="2025-09-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-09-30" style="grid-column:3;grid-row:4" aria-label="2025-09-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-01" style="grid-column:3;grid-row:5" aria-label="2025-10-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-02" style="grid-column:3;grid-row:6" aria-label="2025-10-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-03" style="grid-column:3;grid-row:7" aria-label="2025-10-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-04" style="grid-column:3;grid-row:8" aria-label="2025-10-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-05" style="grid-column:4;grid-row:2" aria-label="2025-10-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-06" style="grid-column:4;grid-row:3" aria-label="2025-10-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-07" style="grid-column:4;grid-row:4" aria-label="2025-10-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-08" style="grid-column:4;grid-row:5" aria-label="2025-10-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-09" style="grid-column:4;grid-row:6" aria-label="2025-10-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-10" style="grid-column:4;grid-row:7" aria-label="2025-10-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-11" style="grid-column:4;grid-row:8" aria-label="2025-10-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-12" style="grid-column:5;grid-row:2" aria-label="2025-10-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-13" style="grid-column:5;grid-row:3" aria-label="2025-10-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-14" style="grid-column:5;grid-row:4" aria-label="2025-10-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-15" style="grid-column:5;grid-row:5" aria-label="2025-10-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-16" style="grid-column:5;grid-row:6" aria-label="2025-10-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-17" style="grid-column:5;grid-row:7" aria-label="2025-10-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-18" style="grid-column:5;grid-row:8" aria-label="2025-10-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-19" style="grid-column:6;grid-row:2" aria-label="2025-10-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-20" style="grid-column:6;grid-row:3" aria-label="2025-10-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-21" style="grid-column:6;grid-row:4" aria-label="2025-10-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-22" style="grid-column:6;grid-row:5" aria-label="2025-10-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-23" style="grid-column:6;grid-row:6" aria-label="2025-10-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-24" style="grid-column:6;grid-row:7" aria-label="2025-10-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-25" style="grid-column:6;grid-row:8" aria-label="2025-10-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-26" style="grid-column:7;grid-row:2" aria-label="2025-10-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-27" style="grid-column:7;grid-row:3" aria-label="2025-10-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-28" style="grid-column:7;grid-row:4" aria-label="2025-10-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-29" style="grid-column:7;grid-row:5" aria-label="2025-10-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-30" style="grid-column:7;grid-row:6" aria-label="2025-10-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-10-31" style="grid-column:7;grid-row:7" aria-label="2025-10-31：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-01" style="grid-column:7;grid-row:8" aria-label="2025-11-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-02" style="grid-column:8;grid-row:2" aria-label="2025-11-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-03" style="grid-column:8;grid-row:3" aria-label="2025-11-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-04" style="grid-column:8;grid-row:4" aria-label="2025-11-04：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-11-05" style="grid-column:8;grid-row:5" title="Codex 服务中断已解决。
+
+我们在过去 45 分钟遭遇了一次轻微中断，随后在过去 30 分钟演变为全球性中断，目前问题已解决，我们已重置速率限制。如果你们仍然看到问题，请告诉我。" href="https://x.com/thsottiaux/status/1986166501435711936" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-06" style="grid-column:8;grid-row:6" aria-label="2025-11-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-07" style="grid-column:8;grid-row:7" aria-label="2025-11-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-08" style="grid-column:8;grid-row:8" aria-label="2025-11-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-09" style="grid-column:9;grid-row:2" aria-label="2025-11-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-10" style="grid-column:9;grid-row:3" aria-label="2025-11-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-11" style="grid-column:9;grid-row:4" aria-label="2025-11-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-12" style="grid-column:9;grid-row:5" aria-label="2025-11-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-13" style="grid-column:9;grid-row:6" aria-label="2025-11-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-14" style="grid-column:9;grid-row:7" aria-label="2025-11-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-15" style="grid-column:9;grid-row:8" aria-label="2025-11-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-16" style="grid-column:10;grid-row:2" aria-label="2025-11-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-17" style="grid-column:10;grid-row:3" aria-label="2025-11-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-18" style="grid-column:10;grid-row:4" aria-label="2025-11-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-19" style="grid-column:10;grid-row:5" aria-label="2025-11-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-20" style="grid-column:10;grid-row:6" aria-label="2025-11-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-21" style="grid-column:10;grid-row:7" aria-label="2025-11-21：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-11-22" style="grid-column:10;grid-row:8" title="我们已经为所有 Codex 用户重置了速率限制，以补偿过去数小时内美国及周边地区出现的异常高延迟。感谢团队在幕后辛勤工作，让 Codex 保持 24/7 全天候运行。
+
+如果你还没试过，我也强烈推荐试试 GPT-5.1-Codex-Max！" href="https://x.com/thsottiaux/status/1992370994028388670" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-23" style="grid-column:11;grid-row:2" aria-label="2025-11-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-24" style="grid-column:11;grid-row:3" aria-label="2025-11-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-25" style="grid-column:11;grid-row:4" aria-label="2025-11-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-26" style="grid-column:11;grid-row:5" aria-label="2025-11-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-27" style="grid-column:11;grid-row:6" aria-label="2025-11-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-28" style="grid-column:11;grid-row:7" aria-label="2025-11-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-29" style="grid-column:11;grid-row:8" aria-label="2025-11-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-11-30" style="grid-column:12;grid-row:2" aria-label="2025-11-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-01" style="grid-column:12;grid-row:3" aria-label="2025-12-01：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-12-02" style="grid-column:12;grid-row:4" title="我们已经为所有 Codex 用户重置了使用限制，这有助于我们最快地缓解问题，团队将持续处理根本原因。这项调整将在接下来的 10 分钟内覆盖所有用户，敬请享用，并为造成的困惑致歉！" href="https://x.com/thsottiaux/status/1995988609896513743" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-03" style="grid-column:12;grid-row:5" aria-label="2025-12-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-04" style="grid-column:12;grid-row:6" aria-label="2025-12-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-05" style="grid-column:12;grid-row:7" aria-label="2025-12-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-06" style="grid-column:12;grid-row:8" aria-label="2025-12-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-07" style="grid-column:13;grid-row:2" aria-label="2025-12-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-08" style="grid-column:13;grid-row:3" aria-label="2025-12-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-09" style="grid-column:13;grid-row:4" aria-label="2025-12-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-10" style="grid-column:13;grid-row:5" aria-label="2025-12-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-11" style="grid-column:13;grid-row:6" aria-label="2025-12-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-12" style="grid-column:13;grid-row:7" aria-label="2025-12-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-13" style="grid-column:13;grid-row:8" aria-label="2025-12-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-14" style="grid-column:14;grid-row:2" aria-label="2025-12-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-15" style="grid-column:14;grid-row:3" aria-label="2025-12-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-16" style="grid-column:14;grid-row:4" aria-label="2025-12-16：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-12-17" style="grid-column:14;grid-row:5" title="有一阵子没这么做了，但你们懂的。我们重置了所有人的使用额度，尽情享用更多 Codex，并对造成的不便深表歉意。" href="https://x.com/thsottiaux/status/2001114683047317723" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-18" style="grid-column:14;grid-row:6" aria-label="2025-12-18：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-12-19" style="grid-column:14;grid-row:7" title="我们重写了Codex中用于跟踪和计费使用量的底层系统，并在这一过程中重置了使用限制。回溯填充数据非常耗时，而提供免费使用更有趣。尽情享受吧！" href="https://x.com/thsottiaux/status/2002137269134819610" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-20" style="grid-column:14;grid-row:8" aria-label="2025-12-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-21" style="grid-column:15;grid-row:2" aria-label="2025-12-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-22" style="grid-column:15;grid-row:3" aria-label="2025-12-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-23" style="grid-column:15;grid-row:4" aria-label="2025-12-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-24" style="grid-column:15;grid-row:5" aria-label="2025-12-24：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2025-12-25" style="grid-column:15;grid-row:6" title="致Codex用户：为了感谢大家在过去的几个月里带给我们的欢乐，我们的第一份礼物是——**我们已经重置了速率限制，并将使用限制提升至平时的2倍，直至1月1日**。祝大家节日快乐，尽情编码！！
+
+快把这个消息传出去👀" href="https://x.com/thsottiaux/status/2004100061933064395" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-26" style="grid-column:15;grid-row:7" aria-label="2025-12-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-27" style="grid-column:15;grid-row:8" aria-label="2025-12-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-28" style="grid-column:16;grid-row:2" aria-label="2025-12-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-29" style="grid-column:16;grid-row:3" aria-label="2025-12-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-30" style="grid-column:16;grid-row:4" aria-label="2025-12-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2025-12-31" style="grid-column:16;grid-row:5" aria-label="2025-12-31：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-01" style="grid-column:16;grid-row:6" aria-label="2026-01-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-02" style="grid-column:16;grid-row:7" aria-label="2026-01-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-03" style="grid-column:16;grid-row:8" aria-label="2026-01-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-04" style="grid-column:17;grid-row:2" aria-label="2026-01-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-05" style="grid-column:17;grid-row:3" aria-label="2026-01-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-06" style="grid-column:17;grid-row:4" aria-label="2026-01-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-07" style="grid-column:17;grid-row:5" aria-label="2026-01-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-08" style="grid-column:17;grid-row:6" aria-label="2026-01-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-09" style="grid-column:17;grid-row:7" aria-label="2026-01-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-10" style="grid-column:17;grid-row:8" aria-label="2026-01-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-11" style="grid-column:18;grid-row:2" aria-label="2026-01-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-12" style="grid-column:18;grid-row:3" aria-label="2026-01-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-13" style="grid-column:18;grid-row:4" aria-label="2026-01-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-14" style="grid-column:18;grid-row:5" aria-label="2026-01-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-15" style="grid-column:18;grid-row:6" aria-label="2026-01-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-16" style="grid-column:18;grid-row:7" aria-label="2026-01-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-17" style="grid-column:18;grid-row:8" aria-label="2026-01-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-18" style="grid-column:19;grid-row:2" aria-label="2026-01-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-19" style="grid-column:19;grid-row:3" aria-label="2026-01-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-20" style="grid-column:19;grid-row:4" aria-label="2026-01-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-21" style="grid-column:19;grid-row:5" aria-label="2026-01-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-22" style="grid-column:19;grid-row:6" aria-label="2026-01-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-23" style="grid-column:19;grid-row:7" aria-label="2026-01-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-24" style="grid-column:19;grid-row:8" aria-label="2026-01-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-25" style="grid-column:20;grid-row:2" aria-label="2026-01-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-26" style="grid-column:20;grid-row:3" aria-label="2026-01-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-27" style="grid-column:20;grid-row:4" aria-label="2026-01-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-28" style="grid-column:20;grid-row:5" aria-label="2026-01-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-29" style="grid-column:20;grid-row:6" aria-label="2026-01-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-30" style="grid-column:20;grid-row:7" aria-label="2026-01-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-01-31" style="grid-column:20;grid-row:8" aria-label="2026-01-31：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-01" style="grid-column:21;grid-row:2" aria-label="2026-02-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-02" style="grid-column:21;grid-row:3" aria-label="2026-02-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-03" style="grid-column:21;grid-row:4" aria-label="2026-02-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-04" style="grid-column:21;grid-row:5" aria-label="2026-02-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-05" style="grid-column:21;grid-row:6" aria-label="2026-02-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-06" style="grid-column:21;grid-row:7" aria-label="2026-02-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-07" style="grid-column:21;grid-row:8" aria-label="2026-02-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-08" style="grid-column:22;grid-row:2" aria-label="2026-02-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-09" style="grid-column:22;grid-row:3" aria-label="2026-02-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-10" style="grid-column:22;grid-row:4" aria-label="2026-02-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-11" style="grid-column:22;grid-row:5" aria-label="2026-02-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-12" style="grid-column:22;grid-row:6" aria-label="2026-02-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-13" style="grid-column:22;grid-row:7" aria-label="2026-02-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-14" style="grid-column:22;grid-row:8" aria-label="2026-02-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-15" style="grid-column:23;grid-row:2" aria-label="2026-02-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-16" style="grid-column:23;grid-row:3" aria-label="2026-02-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-17" style="grid-column:23;grid-row:4" aria-label="2026-02-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-18" style="grid-column:23;grid-row:5" aria-label="2026-02-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-19" style="grid-column:23;grid-row:6" aria-label="2026-02-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-20" style="grid-column:23;grid-row:7" aria-label="2026-02-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-21" style="grid-column:23;grid-row:8" aria-label="2026-02-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-22" style="grid-column:24;grid-row:2" aria-label="2026-02-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-23" style="grid-column:24;grid-row:3" aria-label="2026-02-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-24" style="grid-column:24;grid-row:4" aria-label="2026-02-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-25" style="grid-column:24;grid-row:5" aria-label="2026-02-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-26" style="grid-column:24;grid-row:6" aria-label="2026-02-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-27" style="grid-column:24;grid-row:7" aria-label="2026-02-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-02-28" style="grid-column:24;grid-row:8" aria-label="2026-02-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-01" style="grid-column:25;grid-row:2" aria-label="2026-03-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-02" style="grid-column:25;grid-row:3" aria-label="2026-03-02：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-03-03" style="grid-column:25;grid-row:4" title="Codex 已恢复上线。我们引入了一个问题，导致请求被拦截并因高网络风险而被拒绝。该问题在 ~8 分钟内被修复，我们现在已重新上线并全面正常运行。
+
+团队将重置速率限制，已经有一段时间了。这一次算我们请客。" href="https://x.com/thsottiaux/status/2028649088594436225" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-03-04" style="grid-column:25;grid-row:5" title="我们发现了一个问题，导致约9%的Plus和Pro用户的Codex限制未获得2倍的促销提升。
+
+我们现在已修复此问题，并正在为所有Plus和Pro用户重置速率限制以示补偿。深表歉意，感谢大家的" href="https://x.com/thsottiaux/status/2029308599835738218" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-05" style="grid-column:25;grid-row:6" aria-label="2026-03-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-06" style="grid-column:25;grid-row:7" aria-label="2026-03-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-07" style="grid-column:25;grid-row:8" aria-label="2026-03-07：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-03-08" style="grid-column:26;grid-row:2" title="我们没有证据表明 Codex 使用量被过快消耗是一个普遍问题，但已有足够多的报告，我们已为 Plus 和 Pro 订阅用户重置了速率限制，同时将在接下来的 1-3 天内收尾我们的调查。" href="https://x.com/thsottiaux/status/2030474136024400173" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-09" style="grid-column:26;grid-row:3" aria-label="2026-03-09：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-03-10" style="grid-column:26;grid-row:4" title="这个 Codex 问题现在已完全解决，并且在过去几个小时里保持稳定。
+
+你们已经习惯了，但没错，这意味着我们稍后就会重置速率限制。尽情享受吧。" href="https://x.com/thsottiaux/status/2031216405266481489" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-03-11" style="grid-column:26;grid-row:5" title="好的，Codex 已恢复且稳定，我们应该能好一阵子了。重置按钮已按下，稍后应该就能看到" href="https://x.com/thsottiaux/status/2031605592352313567" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-12" style="grid-column:26;grid-row:6" aria-label="2026-03-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-13" style="grid-column:26;grid-row:7" aria-label="2026-03-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-14" style="grid-column:26;grid-row:8" aria-label="2026-03-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-15" style="grid-column:27;grid-row:2" aria-label="2026-03-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-16" style="grid-column:27;grid-row:3" aria-label="2026-03-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-17" style="grid-column:27;grid-row:4" aria-label="2026-03-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-18" style="grid-column:27;grid-row:5" aria-label="2026-03-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-19" style="grid-column:27;grid-row:6" aria-label="2026-03-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-20" style="grid-column:27;grid-row:7" aria-label="2026-03-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-21" style="grid-column:27;grid-row:8" aria-label="2026-03-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-22" style="grid-column:28;grid-row:2" aria-label="2026-03-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-23" style="grid-column:28;grid-row:3" aria-label="2026-03-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-24" style="grid-column:28;grid-row:4" aria-label="2026-03-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-25" style="grid-column:28;grid-row:5" aria-label="2026-03-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-26" style="grid-column:28;grid-row:6" aria-label="2026-03-26：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-03-27" style="grid-column:28;grid-row:7" title="大家好。我们已经重置了所有套餐的 Codex 使用限制，让大家都能体验我们刚刚推出的绝妙插件，而且确实已经有一阵子没有重置了！
+
+你可以用 Codex 构建无限的东西。玩得开心！" href="https://x.com/thsottiaux/status/2037346989244096581" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-28" style="grid-column:28;grid-row:8" aria-label="2026-03-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-29" style="grid-column:29;grid-row:2" aria-label="2026-03-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-30" style="grid-column:29;grid-row:3" aria-label="2026-03-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-03-31" style="grid-column:29;grid-row:4" aria-label="2026-03-31：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-04-01" style="grid-column:29;grid-row:5" title="我们的 Codex 仪表盘显示，越来越多用户触及速率限制。由于我们尚未完全理解其中原因，我做出了一个谨慎的决定：重置所有套餐的用量限制。尽情使用吧。
+
+我还想庆祝我们找到了一批欺诈账户，这些" href="https://x.com/thsottiaux/status/2039248564967424483" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-02" style="grid-column:29;grid-row:6" aria-label="2026-04-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-03" style="grid-column:29;grid-row:7" aria-label="2026-04-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-04" style="grid-column:29;grid-row:8" aria-label="2026-04-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-05" style="grid-column:30;grid-row:2" aria-label="2026-04-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-06" style="grid-column:30;grid-row:3" aria-label="2026-04-06：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-04-07" style="grid-column:30;grid-row:4" title="现在每周有三百万人使用Codex——不到一个月前是两百万人。看到这样的增长真是太不可思议了。感谢你们所有人，也感谢我们所在的生态系统。为了庆祝，我们正在重置速率限制，以便你们继续构建，而且我们还会再次重置它们。" href="https://x.com/thsottiaux/status/2041655710346572085" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-08" style="grid-column:30;grid-row:5" aria-label="2026-04-08：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-04-09" style="grid-column:30;grid-row:6" title="我们做到了，跟$100套餐打个招呼吧！
+
+这应该是你们很多人的理想之选。它附带大量的Codex使用额度。而且是的，正如我昨天提到的，我们也在再次重置限额。让我们继续构建吧！" href="https://x.com/thsottiaux/status/2042299371602264319" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-10" style="grid-column:30;grid-row:7" aria-label="2026-04-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-11" style="grid-column:30;grid-row:8" aria-label="2026-04-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-12" style="grid-column:31;grid-row:2" aria-label="2026-04-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-13" style="grid-column:31;grid-row:3" aria-label="2026-04-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-14" style="grid-column:31;grid-row:4" aria-label="2026-04-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-15" style="grid-column:31;grid-row:5" aria-label="2026-04-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-16" style="grid-column:31;grid-row:6" aria-label="2026-04-16：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-04-17" style="grid-column:31;grid-row:7" title="嗨！为了庆祝其一周年纪念，我允许 Codex 在所有套餐中重置自己的速率限制。尽情享受所有新功能吧。" href="https://x.com/thsottiaux/status/2044943514832871564" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-18" style="grid-column:31;grid-row:8" aria-label="2026-04-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-19" style="grid-column:32;grid-row:2" aria-label="2026-04-19：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-04-20" style="grid-column:32;grid-row:3" title="Codex事件已得到缓解，正在恢复中。持续了大约10分钟，Codex本身帮助了修复工作，但这次最终的洞察来自人类。
+
+对造成的中断表示歉意，速率限制重置即将到来。" href="https://x.com/thsottiaux/status/2046367145588916687" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-21" style="grid-column:32;grid-row:4" aria-label="2026-04-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-22" style="grid-column:32;grid-row:5" aria-label="2026-04-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-23" style="grid-column:32;grid-row:6" aria-label="2026-04-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-24" style="grid-column:32;grid-row:7" aria-label="2026-04-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-25" style="grid-column:32;grid-row:8" aria-label="2026-04-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-26" style="grid-column:33;grid-row:2" aria-label="2026-04-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-27" style="grid-column:33;grid-row:3" aria-label="2026-04-27：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-04-28" style="grid-column:33;grid-row:4" title="不要只是为了好玩就重置Codex的速率限制，那是要花钱的。
+不要只是为了好玩就重置Codex的速率限制，那是要花钱的。
+
+...但气氛很不错...
+
+我已将所有付费计划的Codex速率限制重置，以庆祝愉快的一周，让大家能用GPT-5.5构建" href="https://x.com/thsottiaux/status/2048997818673537399" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-29" style="grid-column:33;grid-row:5" aria-label="2026-04-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-04-30" style="grid-column:33;grid-row:6" aria-label="2026-04-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-01" style="grid-column:33;grid-row:7" aria-label="2026-05-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-02" style="grid-column:33;grid-row:8" aria-label="2026-05-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-03" style="grid-column:34;grid-row:2" aria-label="2026-05-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-04" style="grid-column:34;grid-row:3" aria-label="2026-05-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-05" style="grid-column:34;grid-row:4" aria-label="2026-05-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-06" style="grid-column:34;grid-row:5" aria-label="2026-05-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-07" style="grid-column:34;grid-row:6" aria-label="2026-05-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-08" style="grid-column:34;grid-row:7" aria-label="2026-05-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-09" style="grid-column:34;grid-row:8" aria-label="2026-05-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-10" style="grid-column:35;grid-row:2" aria-label="2026-05-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-11" style="grid-column:35;grid-row:3" aria-label="2026-05-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-12" style="grid-column:35;grid-row:4" aria-label="2026-05-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-13" style="grid-column:35;grid-row:5" aria-label="2026-05-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-14" style="grid-column:35;grid-row:6" aria-label="2026-05-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-15" style="grid-column:35;grid-row:7" aria-label="2026-05-15：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-05-16" style="grid-column:35;grid-row:8" title="所有付费计划的Codex使用额度现已重置。周末愉快！" href="https://x.com/thsottiaux/status/2055707616605835333" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-17" style="grid-column:36;grid-row:2" aria-label="2026-05-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-18" style="grid-column:36;grid-row:3" aria-label="2026-05-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-19" style="grid-column:36;grid-row:4" aria-label="2026-05-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-20" style="grid-column:36;grid-row:5" aria-label="2026-05-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-21" style="grid-column:36;grid-row:6" aria-label="2026-05-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-22" style="grid-column:36;grid-row:7" aria-label="2026-05-22：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-05-23" style="grid-column:36;grid-row:8" title="你们中的一些人注意到 Codex 中的限额消耗得更快，我们将其根本原因归咎于一项已回滚的优化，该优化影响了跨长时间运行会话压缩时的缓存命中率。
+
+我们已修复此问题，并且现已重置所有账户的使用限额。祝你们周末愉快。" href="https://x.com/thsottiaux/status/2058280452851638313" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-24" style="grid-column:37;grid-row:2" aria-label="2026-05-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-25" style="grid-column:37;grid-row:3" aria-label="2026-05-25：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-26" style="grid-column:37;grid-row:4" aria-label="2026-05-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-27" style="grid-column:37;grid-row:5" aria-label="2026-05-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-28" style="grid-column:37;grid-row:6" aria-label="2026-05-28：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-29" style="grid-column:37;grid-row:7" aria-label="2026-05-29：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-05-30" style="grid-column:37;grid-row:8" aria-label="2026-05-30：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-05-31" style="grid-column:38;grid-row:2" title="Codex 的使用限制已为所有付费 ChatGPT 订阅重置。你应该已恢复到 100% 的每周限制和 100% 的每小时限制。
+
+今天让 token 做出不可思议的事情，玩得开心。" href="https://x.com/thsottiaux/status/2061106703446450392" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-01" style="grid-column:38;grid-row:3" aria-label="2026-06-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-02" style="grid-column:38;grid-row:4" aria-label="2026-06-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-03" style="grid-column:38;grid-row:5" aria-label="2026-06-03：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-06-04" style="grid-column:38;grid-row:6" title="嗨。在过去的24小时里，我们发生了三起各自独立的小事故，影响了Codex的可靠性。三起都嫌多，我们正在采取积极措施，确保它们不再发生。
+
+我已经在所有付费套餐中重置了Codex的使用限制。愿token重新流动起来。" href="https://x.com/thsottiaux/status/2062329981548802523" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-05" style="grid-column:38;grid-row:7" aria-label="2026-06-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-06" style="grid-column:38;grid-row:8" aria-label="2026-06-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-07" style="grid-column:39;grid-row:2" aria-label="2026-06-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-08" style="grid-column:39;grid-row:3" aria-label="2026-06-08：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-09" style="grid-column:39;grid-row:4" aria-label="2026-06-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-10" style="grid-column:39;grid-row:5" aria-label="2026-06-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-11" style="grid-column:39;grid-row:6" aria-label="2026-06-11：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-12" style="grid-column:39;grid-row:7" aria-label="2026-06-12：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-13" style="grid-column:39;grid-row:8" aria-label="2026-06-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-14" style="grid-column:40;grid-row:2" aria-label="2026-06-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-15" style="grid-column:40;grid-row:3" aria-label="2026-06-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-16" style="grid-column:40;grid-row:4" aria-label="2026-06-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-17" style="grid-column:40;grid-row:5" aria-label="2026-06-17：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-06-18" style="grid-column:40;grid-row:6" title="最亲爱的温柔 Codex 使用者：
+
+我们悄悄地做了一次双重重置。你不仅能获得一次由我们提供的完整重置，还会额外得到一个存入重置储备库的额度，供你自行择时使用。
+
+尽情享用" href="https://x.com/thsottiaux/status/2067399435009622521" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-19" style="grid-column:40;grid-row:7" aria-label="2026-06-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-20" style="grid-column:40;grid-row:8" aria-label="2026-06-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-21" style="grid-column:41;grid-row:2" aria-label="2026-06-21：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-22" style="grid-column:41;grid-row:3" aria-label="2026-06-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-23" style="grid-column:41;grid-row:4" aria-label="2026-06-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-24" style="grid-column:41;grid-row:5" aria-label="2026-06-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-25" style="grid-column:41;grid-row:6" aria-label="2026-06-25：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-06-26" style="grid-column:41;grid-row:7" title="我们正在为所有 Codex 用户免费提供一次用量重置。应该会在接下来几个小时内显示在你们的账户中。
+
+我们已经采取了一些缓解措施，但我们的调查尚未显示用户受到大规模影响。我们正在继续监控这一情况。" href="https://x.com/thsottiaux/status/2070653282440405046" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-27" style="grid-column:41;grid-row:8" aria-label="2026-06-27：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-06-28" style="grid-column:42;grid-row:2" title="由于我们仍在调查中，我已重置了每个人的 Codex 使用限制。这是一次硬重置，因为有些用户已经积攒了最多三个可以自行安排时间使用的储备重置。
+
+有趣的是，本周在 OpenAI 被称为 RESET 周，其意思是" href="https://x.com/thsottiaux/status/2071381664853319742" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-06-29" style="grid-column:42;grid-row:3" title="Codex 使用限制将在接下来一小时内再次完全重置，并且我们会向你的余额中存入一次额外的重置额度，供你在接下来的 24 小时内自行使用。
+
+我们调查了有关 Codex 使用量消耗速度快于预期的报告。并非只有一个核心问题，而是" href="https://x.com/thsottiaux/status/2071740419030053227" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-06-30" style="grid-column:42;grid-row:4" aria-label="2026-06-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-01" style="grid-column:42;grid-row:5" aria-label="2026-07-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-02" style="grid-column:42;grid-row:6" aria-label="2026-07-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-03" style="grid-column:42;grid-row:7" aria-label="2026-07-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-04" style="grid-column:42;grid-row:8" aria-label="2026-07-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-05" style="grid-column:43;grid-row:2" aria-label="2026-07-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-06" style="grid-column:43;grid-row:3" aria-label="2026-07-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-07" style="grid-column:43;grid-row:4" aria-label="2026-07-07：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-08" style="grid-column:43;grid-row:5" aria-label="2026-07-08：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-09" style="grid-column:43;grid-row:6" title="享受你的 ChatGPT Work 和 Codex 使用额度的完整重置。接下来一小时内传播。
+
+@_rajanagarwal 刚刚加入，致力于模型研究并推进编码能力。感谢他今天按下了按钮。" href="https://x.com/thsottiaux/status/2075330198887940337" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-10" style="grid-column:43;grid-row:7" title="你好，美丽的人们！我们已重置了 Codex 和 ChatGPT Work 的使用限制。今天晚些时候还会再来一次。欢呼吧。
+
+既然现在你们注意到了，我简单更新一下 ChatGPT Work、Codex 以及我们昨天分享的所有内容。
+
+我们在过" href="https://x.com/thsottiaux/status/2075641131002700120" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-11" style="grid-column:43;grid-row:8" title="推出……又一次为所有 ChatGPT Work 和 Codex 用户重置使用限制。应该在接下来的 30 分钟内生效。祝你们度过一个愉快的周末。
+
+感谢你们把我们的系统推到了绝对极限，我们从未见过流量增长得如此之快。继续提供反馈" href="https://x.com/thsottiaux/status/2075820987833274448" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-12" style="grid-column:44;grid-row:2" title="向ChatGPT Work和Codex的500k用户增加了储备重置功能。
+
+目前情况：
+- 刚刚发布了从网页端和移动端使用储备重置的功能。在今天之前，你只能在桌面应用中进行操作
+- 遇到了一个问题：使用过储备重置的用户中不到10%……" href="https://x.com/thsottiaux/status/2076418567143408112" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-13" style="grid-column:44;grid-row:3" title="感谢现在正在使用 Codex 和 ChatGPT Work 的 7M 活跃用户。
+
+为庆祝这一里程碑，我们已为每个人的账户添加了一项可自行启用的重置额度。你可以在桌面应用或网页端启用它，启用后将为你补充每周使用量。
+
+祝大家玩得开心。" href="https://x.com/thsottiaux/status/2076735790567338203" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-14" style="grid-column:44;grid-row:4" title="大家好。我们在 Codex 和 ChatGPT Work 上已拥有 800 万活跃用户。
+
+我们再次为所有人重置使用限制。同时，我们依然不设置 5 小时速率限制，让每个人都能探索 GPT-5.6 Sol 的边界，看看你们能有多大的雄心。" href="https://x.com/thsottiaux/status/2077114635308986427" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-15" style="grid-column:44;grid-row:5" aria-label="2026-07-15：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-16" style="grid-column:44;grid-row:6" title="我们的 Codex 和 ChatGPT Work 用户再次获得一次重置。实际上今天早些时候活跃用户就已经达到了 900 万，但后来被团队为维持系统稳定可靠所做的大约数百万件事分散了注意力。应该过一会儿就能恢复那 100% 的每周使用额度了" href="https://x.com/thsottiaux/status/2077607697487188198" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-17" style="grid-column:44;grid-row:7" aria-label="2026-07-17：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-18" style="grid-column:44;grid-row:8" title="哎呀……我又搞了一次。
+
+所有付费用户的Codex和ChatGPT Work使用限额已重置，尽情使用吧。超级感谢一支了不起的团队，他们以光速迭代，并在我们比以往更快地扩展时保持基础设施稳定运行。
+
+周末愉快！" href="https://x.com/thsottiaux/status/2078320950488297917" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-19" style="grid-column:45;grid-row:2" aria-label="2026-07-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-20" style="grid-column:45;grid-row:3" aria-label="2026-07-20：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-21" style="grid-column:45;grid-row:4" title="10M！
+
+新的一天，Codex 和 ChatGPT Work 付费用户的使用额度将再次重置。将在下一个小时内生效。尽情享用吧。" href="https://x.com/thsottiaux/status/2079609157934886975" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-22" style="grid-column:45;grid-row:5" aria-label="2026-07-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-23" style="grid-column:45;grid-row:6" aria-label="2026-07-23：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-24" style="grid-column:45;grid-row:7" aria-label="2026-07-24：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-25" style="grid-column:45;grid-row:8" title="我们已为所有 Codex 和 ChatGPT Work 用户重置了使用限制。
+
+昨晚大约凌晨 2 点到 4 点，我们遭遇了一次几乎全球性的中断。一切正常并已恢复，但你知道接下来会发生什么。
+
+我们学习。我们重置。尽情享受。" href="https://x.com/thsottiaux/status/2081096447718723984" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-26" style="grid-column:46;grid-row:2" aria-label="2026-07-26：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-27" style="grid-column:46;grid-row:3" aria-label="2026-07-27：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-28" style="grid-column:46;grid-row:4" title="回到笔记本电脑前了。Codex 和 ChatGPT Work 的所有付费用户的用量限制已经重置。Weeeeeeee。今天是好日子！" href="https://x.com/thsottiaux/status/2081940052154933696" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-29" style="grid-column:46;grid-row:5" title="Sol 的朋友们，大家好！我已经为所有 ChatGPT Work 和 Codex 用户重置了使用限制。同时，快速更新一下 GPT-5.6 Sol 的使用限制情况。
+
+过去几周，很多人告诉我们，Sol 消耗你们 Codex 限制的速度比预期更" href="https://x.com/thsottiaux/status/2082317452755751098" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-30" style="grid-column:46;grid-row:6" aria-label="2026-07-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-07-31" style="grid-column:46;grid-row:7" aria-label="2026-07-31：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-01" style="grid-column:46;grid-row:8" title="为了庆祝高效一周并让你在这个周末运行 100,000 个 Luna 线程……没错……等着吧……我已经重置了 Codex 和 ChatGPT Work 的使用限制。
+
+尽情享受。" href="https://x.com/thsottiaux/status/2083395449814229287" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-02" style="grid-column:47;grid-row:2" aria-label="2026-08-02：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-03" style="grid-column:47;grid-row:3" aria-label="2026-08-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-04" style="grid-column:47;grid-row:4" aria-label="2026-08-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-05" style="grid-column:47;grid-row:5" aria-label="2026-08-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-06" style="grid-column:47;grid-row:6" aria-label="2026-08-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-07" style="grid-column:47;grid-row:7" aria-label="2026-08-07：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-08" style="grid-column:47;grid-row:8" title="没错，GPT-5.6 Sol 太棒了，几乎可以用在任何地方，包括在 CC harness 中。
+
+为了庆祝这一点，也因为我不会离开……我已经为所有 ChatGPT Work 和 Codex 的付费用户重置了使用限制。
+
+祝大家玩得开心！" href="https://x.com/thsottiaux/status/2086188036493344823" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-09" style="grid-column:48;grid-row:2" aria-label="2026-08-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-10" style="grid-column:48;grid-row:3" aria-label="2026-08-10：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-11" style="grid-column:48;grid-row:4" title="你好。
+
+完成了。" href="https://x.com/thsottiaux/status/2086972802457063486" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-12" style="grid-column:48;grid-row:5" aria-label="2026-08-12：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-13" style="grid-column:48;grid-row:6" title="其实这是好几天前的旧闻了，但突破了那个15M。大家好好享受这次重置吧。大约一小时内就会落地，去 /fast。" href="https://x.com/thsottiaux/status/2087706104814023111" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-14" style="grid-column:48;grid-row:7" aria-label="2026-08-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-15" style="grid-column:48;grid-row:8" aria-label="2026-08-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-16" style="grid-column:49;grid-row:2" aria-label="2026-08-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-17" style="grid-column:49;grid-row:3" aria-label="2026-08-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-18" style="grid-column:49;grid-row:4" aria-label="2026-08-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-19" style="grid-column:49;grid-row:5" aria-label="2026-08-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-20" style="grid-column:49;grid-row:6" aria-label="2026-08-20：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-08-21" style="grid-column:49;grid-row:7" title="又是我。我带来了好消息。
+
+首先，本周内Codex的活跃用户已经达到了2000万。其次，这值得庆祝，今天白天我们将为每一位Codex和ChatGPT Work用户存入一次BANKED重置额度，你可以按自己的节奏使用：" href="https://x.com/thsottiaux/status/2090766694897619318" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-22" style="grid-column:49;grid-row:8" aria-label="2026-08-22：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-23" style="grid-column:50;grid-row:2" aria-label="2026-08-23：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-24" style="grid-column:50;grid-row:3" title="周日好。重置已推送到账户，针对昨天提到的我们发现的那些问题，我们也落地了一些使用量方面的修复。你应该会感受到明显的改善。明天还会有更多更新，我们会持续沟通。" href="https://x.com/thsottiaux/status/2091688655828246890" target="_blank" rel="noopener noreferrer"></a>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-25" style="grid-column:50;grid-row:4" title="@dtzy_88 啊对，忘了说了" href="https://x.com/thsottiaux/status/2092311059197808936" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-26" style="grid-column:50;grid-row:5" aria-label="2026-08-26：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-27" style="grid-column:50;grid-row:6" title="从未睡得这么好，感觉像被重置了一样。全新的我，也给所有 ChatGPT Work 和 Codex 用户带来全新的使用额度。每按一次按钮，就找回一点青春。
+
+周四愉快" href="https://x.com/thsottiaux/status/2093014447833116908" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-28" style="grid-column:50;grid-row:7" aria-label="2026-08-28：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-29" style="grid-column:50;grid-row:8" title="我们正在重置所有 Codex 和 ChatGPT Work 付费用户的用量。
+
+请继续阅读，了解 Codex 用量限制的最新更新。团队一直在夜以继日地工作，处理了数千份报告并发布了修复。
+
+根据你使用 Codex 的方式，你应该会看到你的用" href="https://x.com/thsottiaux/status/2093801758665715784" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-08-30" style="grid-column:51;grid-row:2" aria-label="2026-08-30：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-31" style="grid-column:51;grid-row:3" title="我昨天想说的是，我们达到了2500万活跃用户。为了庆祝，我们现在已为ChatGPT Work和Codex的所有付费订阅重置了使用额度。
+
+更多消息，请关注The Reset Company。" href="https://x.com/thsottiaux/status/2094251180121854309" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-01" style="grid-column:51;grid-row:4" aria-label="2026-09-01：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-02" style="grid-column:51;grid-row:5" aria-label="2026-09-02：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-09-03" style="grid-column:51;grid-row:6" title="从今天开始，在你付费的 ChatGPT 套餐中，每有一天无法访问 Astra，我们就会为你存入一次累积重置额度。团队正在竭尽全力，以最快速度为你提供访问权限。
+
+第一次重置额度大约在 3 小时后发放。如果你还没有账户，仍然有时间创建。" href="https://x.com/thsottiaux/status/2095651088502591861" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-04" style="grid-column:51;grid-row:7" aria-label="2026-09-04：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-09-05" style="grid-column:51;grid-row:8" title="因为我们对Astra今天提前上线感到无比兴奋，而你们一直对我们超级耐心（其实并没有，但没关系！）……我们将在今天为所有Plus、Pro和Business用户进行完整的累积额度重置。额度将在本日结束时到账。
+
+祝Astra日快乐，享受一个美好" href="https://x.com/thsottiaux/status/2096035437299237298" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-06" style="grid-column:52;grid-row:2" aria-label="2026-09-06：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-07" style="grid-column:52;grid-row:3" aria-label="2026-09-07：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-09-08" style="grid-column:52;grid-row:4" title="所有用户的用量限制已重置。祝大家享受与Astra共度的这一周。" href="https://x.com/thsottiaux/status/2097174560412246215" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-09" style="grid-column:52;grid-row:5" aria-label="2026-09-09：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-10" style="grid-column:52;grid-row:6" aria-label="2026-09-10：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-11" style="grid-column:52;grid-row:7" aria-label="2026-09-11：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-09-12" style="grid-column:52;grid-row:8" title="重置已全部传播。好梦。" href="https://x.com/thsottiaux/status/2098685367058612394" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-13" style="grid-column:53;grid-row:2" aria-label="2026-09-13：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-14" style="grid-column:53;grid-row:3" aria-label="2026-09-14：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-15" style="grid-column:53;grid-row:4" aria-label="2026-09-15：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-16" style="grid-column:53;grid-row:5" aria-label="2026-09-16：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-17" style="grid-column:53;grid-row:6" aria-label="2026-09-17：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-18" style="grid-column:53;grid-row:7" aria-label="2026-09-18：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-19" style="grid-column:53;grid-row:8" aria-label="2026-09-19：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-20" style="grid-column:54;grid-row:2" aria-label="2026-09-20：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-21" style="grid-column:54;grid-row:3" aria-label="2026-09-21：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-09-22" style="grid-column:54;grid-row:4" title="GPT-6 Sol 和 Luna 出来了。它们不仅在各方面都有非常显著的提升，而且在写作和那种“你一用就知道”的整体质量上也是如此。
+
+我们还将 API 价格永久下调 50%，让这两者都能适用于大量新的使用场景，也让你的用量更经用，即使是在" href="https://x.com/thsottiaux/status/2102463847714247142" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-23" style="grid-column:54;grid-row:5" aria-label="2026-09-23：未重置"></button>
+          <span class="cg-cell cg-cell--future" style="grid-column:54;grid-row:6" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:54;grid-row:7" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:54;grid-row:8" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="log-section" aria-labelledby="log-heading">
+      <div class="section-head">
+        <h2 id="log-heading">Codex 重置公告</h2>
+        <p class="section-sub">每次公告，都留有记录</p>
+      </div>
+      <ol class="log-list">
+    <li class="log-item" data-tweet-id="2102463847714247142">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-22T18:23:37.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-22T18:23:37.000Z">2026年9月22日 18:23 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">GPT-6 Sol 和 Luna 出来了。它们不仅在各方面都有非常显著的提升，而且在写作和那种“你一用就知道”的整体质量上也是如此。
+
+我们还将 API 价格永久下调 50%，让这两者都能适用于大量新的使用场景，也让你的用量更经用，即使是在订阅上也是如此。
+
+还有一件事。我们正在向我们所有 Plus、Pro 和 Business 用户的账户加载一次 banked reset。冲！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2102463847714247142" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2098685367058612394">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-12T08:09:17.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-12T08:09:17.000Z">2026年9月12日 08:09 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">重置已全部传播。好梦。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2098685367058612394" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="observed-2097043464538264003">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-08T01:56:57.501Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-08T01:56:57.501Z">2026年9月8日 01:56 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">所有用户的用量限制已重置。祝大家享受与Astra共度的这一周。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2097174560412246215" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+      </ol>
+      <details class="log-more">
+        <summary class="log-more-toggle">
+          <span class="log-more-label-closed">查看全部 54 次重置</span>
+          <span class="log-more-label-open">收起</span>
+          <span class="log-more-arrow" aria-hidden="true">&darr;</span>
+        </summary>
+        <ol class="log-list log-list--more" start="4">
+    <li class="log-item" data-tweet-id="2096035437299237298">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-05T00:39:25.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-05T00:39:25.000Z">2026年9月5日 00:39 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">因为我们对Astra今天提前上线感到无比兴奋，而你们一直对我们超级耐心（其实并没有，但没关系！）……我们将在今天为所有Plus、Pro和Business用户进行完整的累积额度重置。额度将在本日结束时到账。
+
+祝Astra日快乐，享受一个美好的周末。
+
+附：如果你在太平洋时间晚上8点前创建账户或升级，也能获得重置。还有时间！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2096035437299237298" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2095651088502591861">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-03T23:12:09.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-03T23:12:09.000Z">2026年9月3日 23:12 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">从今天开始，在你付费的 ChatGPT 套餐中，每有一天无法访问 Astra，我们就会为你存入一次累积重置额度。团队正在竭尽全力，以最快速度为你提供访问权限。
+
+第一次重置额度大约在 3 小时后发放。如果你还没有账户，仍然有时间创建。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2095651088502591861" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2094251180121854309">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-31T02:29:25.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-31T02:29:25.000Z">2026年8月31日 02:29 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我昨天想说的是，我们达到了2500万活跃用户。为了庆祝，我们现在已为ChatGPT Work和Codex的所有付费订阅重置了使用额度。
+
+更多消息，请关注The Reset Company。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2094251180121854309" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2093801758665715784">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-29T20:43:34.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-29T20:43:34.000Z">2026年8月29日 20:43 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们正在重置所有 Codex 和 ChatGPT Work 付费用户的用量。
+
+请继续阅读，了解 Codex 用量限制的最新更新。团队一直在夜以继日地工作，处理了数千份报告并发布了修复。
+
+根据你使用 Codex 的方式，你应该会看到你的用量比以前多出 10% 到 50%。
+
+我们确实进行了一次细致入微的排查，发现了很多积压已久的小问题，以下是我们发现并修复的内容：
+- 压缩。我们在压缩时保留了旧图像，有时会使上下文大到足以再次触发压缩。修复后，大量使用图像的用户用量下降了约 10%。已修复。
+- 内存。后台内存工作者可能继承 Stop 钩子，并在钩子不允许它们完成时继续运行。这影响了不到 1% 的用户，但长尾情况相当糟糕，我们看到一个示例线程检查它是否可以停止 15,000 次。已修复。
+- 目标。在某些情况下，一个已设置的 /goal 可能完成后继续运行，超过预期的停止条件，或者模型会不断重试损坏的工具而不停止。我们看到的例子消耗了每周额度的 15% 到 70%。已修复。
+- 自动化。一些自定义计划可能比配置的更频繁运行。已修复。
+- 子代理。较小的模型（例如 Luna）有时会在没有被明确要求的情况下选择更强大的助手。同样，当编排模型未以 /fast 模式运行时，也可能会请求子代理以 /fast 模式运行。已修复。
+- 计算机历史记录。旧实现可能导致反复总结重叠的活动。在某些情况下，我们看到它每周消耗高达每周用量的五分之一。已修复。
+- 滚动任务摘要。普通轮次会触发额外的后台请求。这增加了约 1% 的令牌用量。每次都很小，但积少成多。我们已禁用了此功能。
+- MCP。一些工具结果可能被重复编码。我们还发现工具指令被截断并重新获取。已修复。
+
+我们还进行了架构更改以防止这些问题再次发生，如果发生，我们的团队无论如何都会收到提醒。我们也在努力直接在应用中向你显示用量去向，这样你就不必猜测了。
+
+不用说，我们正在重置用量限制，希望你度过一个非常愉快的周六！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2093801758665715784" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2093014447833116908">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-27T16:35:05.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-27T16:35:05.000Z">2026年8月27日 16:35 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">从未睡得这么好，感觉像被重置了一样。全新的我，也给所有 ChatGPT Work 和 Codex 用户带来全新的使用额度。每按一次按钮，就找回一点青春。
+
+周四愉快</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2093014447833116908" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="observed-20260825T143200Z">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-25T14:30:00.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-25T14:30:00.000Z">2026年8月25日 14:30 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">@dtzy_88 啊对，忘了说了</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2092311059197808936" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2091688655828246890">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-24T00:46:51.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-24T00:46:51.000Z">2026年8月24日 00:46 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">周日好。重置已推送到账户，针对昨天提到的我们发现的那些问题，我们也落地了一些使用量方面的修复。你应该会感受到明显的改善。明天还会有更多更新，我们会持续沟通。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2091688655828246890" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2090766694897619318">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-21T11:43:19.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-21T11:43:19.000Z">2026年8月21日 11:43 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">又是我。我带来了好消息。
+
+首先，本周内Codex的活跃用户已经达到了2000万。其次，这值得庆祝，今天白天我们将为每一位Codex和ChatGPT Work用户存入一次BANKED重置额度，你可以按自己的节奏使用：</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2090766694897619318" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2087706104814023111">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-13T01:01:37.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-13T01:01:37.000Z">2026年8月13日 01:01 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">其实这是好几天前的旧闻了，但突破了那个15M。大家好好享受这次重置吧。大约一小时内就会落地，去 /fast。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2087706104814023111" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2086972802457063486">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-11T00:27:44.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-11T00:27:44.000Z">2026年8月11日 00:27 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">你好。
+
+完成了。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2086972802457063486" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2086188036493344823">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-08T20:29:22.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-08T20:29:22.000Z">2026年8月8日 20:29 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">没错，GPT-5.6 Sol 太棒了，几乎可以用在任何地方，包括在 CC harness 中。
+
+为了庆祝这一点，也因为我不会离开……我已经为所有 ChatGPT Work 和 Codex 的付费用户重置了使用限制。
+
+祝大家玩得开心！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2086188036493344823" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2083395449814229287">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-08-01T03:32:37.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-08-01T03:32:37.000Z">2026年8月1日 03:32 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">为了庆祝高效一周并让你在这个周末运行 100,000 个 Luna 线程……没错……等着吧……我已经重置了 Codex 和 ChatGPT Work 的使用限制。
+
+尽情享受。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2083395449814229287" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2082317452755751098">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-29T04:09:02.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-29T04:09:02.000Z">2026年7月29日 04:09 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">Sol 的朋友们，大家好！我已经为所有 ChatGPT Work 和 Codex 用户重置了使用限制。同时，快速更新一下 GPT-5.6 Sol 的使用限制情况。
+
+过去几周，很多人告诉我们，Sol 消耗你们 Codex 限制的速度比预期更快。需要说明的是，我们已经</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2082317452755751098" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2081940052154933696">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-28T03:09:23.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-28T03:09:23.000Z">2026年7月28日 03:09 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">回到笔记本电脑前了。Codex 和 ChatGPT Work 的所有付费用户的用量限制已经重置。Weeeeeeee。今天是好日子！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2081940052154933696" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2081096447718723984">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-25T19:17:12.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-25T19:17:12.000Z">2026年7月25日 19:17 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们已为所有 Codex 和 ChatGPT Work 用户重置了使用限制。
+
+昨晚大约凌晨 2 点到 4 点，我们遭遇了一次几乎全球性的中断。一切正常并已恢复，但你知道接下来会发生什么。
+
+我们学习。我们重置。尽情享受。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2081096447718723984" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2079609157934886975">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-21T16:47:15.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-21T16:47:15.000Z">2026年7月21日 16:47 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">10M！
+
+新的一天，Codex 和 ChatGPT Work 付费用户的使用额度将再次重置。将在下一个小时内生效。尽情享用吧。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2079609157934886975" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2078320950488297917">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-18T03:28:22.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-18T03:28:22.000Z">2026年7月18日 03:28 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">哎呀……我又搞了一次。
+
+所有付费用户的Codex和ChatGPT Work使用限额已重置，尽情使用吧。超级感谢一支了不起的团队，他们以光速迭代，并在我们比以往更快地扩展时保持基础设施稳定运行。
+
+周末愉快！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2078320950488297917" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2077607697487188198">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-16T04:14:09.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-16T04:14:09.000Z">2026年7月16日 04:14 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们的 Codex 和 ChatGPT Work 用户再次获得一次重置。实际上今天早些时候活跃用户就已经达到了 900 万，但后来被团队为维持系统稳定可靠所做的大约数百万件事分散了注意力。应该过一会儿就能恢复那 100% 的每周使用额度了</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2077607697487188198" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2077114635308986427">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-14T19:34:54.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-14T19:34:54.000Z">2026年7月14日 19:34 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">大家好。我们在 Codex 和 ChatGPT Work 上已拥有 800 万活跃用户。
+
+我们再次为所有人重置使用限制。同时，我们依然不设置 5 小时速率限制，让每个人都能探索 GPT-5.6 Sol 的边界，看看你们能有多大的雄心。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2077114635308986427" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2076735790567338203">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-13T18:29:31.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-13T18:29:31.000Z">2026年7月13日 18:29 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">感谢现在正在使用 Codex 和 ChatGPT Work 的 7M 活跃用户。
+
+为庆祝这一里程碑，我们已为每个人的账户添加了一项可自行启用的重置额度。你可以在桌面应用或网页端启用它，启用后将为你补充每周使用量。
+
+祝大家玩得开心。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2076735790567338203" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2076418567143408112">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-12T21:28:59.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-12T21:28:59.000Z">2026年7月12日 21:28 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">向ChatGPT Work和Codex的500k用户增加了储备重置功能。
+
+目前情况：
+- 刚刚发布了从网页端和移动端使用储备重置的功能。在今天之前，你只能在桌面应用中进行操作
+- 遇到了一个问题：使用过储备重置的用户中不到10%……</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2076418567143408112" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2075820987833274448">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-11T05:54:25.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-11T05:54:25.000Z">2026年7月11日 05:54 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">推出……又一次为所有 ChatGPT Work 和 Codex 用户重置使用限制。应该在接下来的 30 分钟内生效。祝你们度过一个愉快的周末。
+
+感谢你们把我们的系统推到了绝对极限，我们从未见过流量增长得如此之快。继续提供反馈</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2075820987833274448" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2075641131002700120">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-10T17:59:43.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-10T17:59:43.000Z">2026年7月10日 17:59 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">你好，美丽的人们！我们已重置了 Codex 和 ChatGPT Work 的使用限制。今天晚些时候还会再来一次。欢呼吧。
+
+既然现在你们注意到了，我简单更新一下 ChatGPT Work、Codex 以及我们昨天分享的所有内容。
+
+我们在过去的 24 小时内……</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2075641131002700120" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2075330198887940337">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-07-09T21:24:11.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-07-09T21:24:11.000Z">2026年7月9日 21:24 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">享受你的 ChatGPT Work 和 Codex 使用额度的完整重置。接下来一小时内传播。
+
+@_rajanagarwal 刚刚加入，致力于模型研究并推进编码能力。感谢他今天按下了按钮。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2075330198887940337" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2071740419030053227">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-06-29T23:39:41.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-06-29T23:39:41.000Z">2026年6月29日 23:39 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">Codex 使用限制将在接下来一小时内再次完全重置，并且我们会向你的余额中存入一次额外的重置额度，供你在接下来的 24 小时内自行使用。
+
+我们调查了有关 Codex 使用量消耗速度快于预期的报告。并非只有一个核心问题，而是</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2071740419030053227" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2071381664853319742">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-06-28T23:54:07.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-06-28T23:54:07.000Z">2026年6月28日 23:54 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">由于我们仍在调查中，我已重置了每个人的 Codex 使用限制。这是一次硬重置，因为有些用户已经积攒了最多三个可以自行安排时间使用的储备重置。
+
+有趣的是，本周在 OpenAI 被称为 RESET 周，其意思是</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2071381664853319742" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2070653282440405046">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-06-26T23:39:48.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-06-26T23:39:48.000Z">2026年6月26日 23:39 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们正在为所有 Codex 用户免费提供一次用量重置。应该会在接下来几个小时内显示在你们的账户中。
+
+我们已经采取了一些缓解措施，但我们的调查尚未显示用户受到大规模影响。我们正在继续监控这一情况。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2070653282440405046" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2067399435009622521">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-06-18T00:10:10.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-06-18T00:10:10.000Z">2026年6月18日 00:10 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">最亲爱的温柔 Codex 使用者：
+
+我们悄悄地做了一次双重重置。你不仅能获得一次由我们提供的完整重置，还会额外得到一个存入重置储备库的额度，供你自行择时使用。
+
+尽情享用</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2067399435009622521" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2062329981548802523">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-06-04T00:25:58.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-06-04T00:25:58.000Z">2026年6月4日 00:25 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">嗨。在过去的24小时里，我们发生了三起各自独立的小事故，影响了Codex的可靠性。三起都嫌多，我们正在采取积极措施，确保它们不再发生。
+
+我已经在所有付费套餐中重置了Codex的使用限制。愿token重新流动起来。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2062329981548802523" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2061106703446450392">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-05-31T15:25:06.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-05-31T15:25:06.000Z">2026年5月31日 15:25 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">Codex 的使用限制已为所有付费 ChatGPT 订阅重置。你应该已恢复到 100% 的每周限制和 100% 的每小时限制。
+
+今天让 token 做出不可思议的事情，玩得开心。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2061106703446450392" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2058280452851638313">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-05-23T20:14:35.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-05-23T20:14:35.000Z">2026年5月23日 20:14 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">你们中的一些人注意到 Codex 中的限额消耗得更快，我们将其根本原因归咎于一项已回滚的优化，该优化影响了跨长时间运行会话压缩时的缓存命中率。
+
+我们已修复此问题，并且现已重置所有账户的使用限额。祝你们周末愉快。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2058280452851638313" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2055707616605835333">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-05-16T17:51:03.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-05-16T17:51:03.000Z">2026年5月16日 17:51 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">所有付费计划的Codex使用额度现已重置。周末愉快！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2055707616605835333" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2048997818673537399">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-04-28T05:28:43.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-04-28T05:28:43.000Z">2026年4月28日 05:28 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">不要只是为了好玩就重置Codex的速率限制，那是要花钱的。
+不要只是为了好玩就重置Codex的速率限制，那是要花钱的。
+
+...但气氛很不错...
+
+我已将所有付费计划的Codex速率限制重置，以庆祝愉快的一周，让大家能用GPT-5.5构建更多东西。尽情享受吧</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2048997818673537399" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2046367145588916687">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-04-20T23:15:21.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-04-20T23:15:21.000Z">2026年4月20日 23:15 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">Codex事件已得到缓解，正在恢复中。持续了大约10分钟，Codex本身帮助了修复工作，但这次最终的洞察来自人类。
+
+对造成的中断表示歉意，速率限制重置即将到来。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2046367145588916687" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2044943514832871564">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-04-17T00:58:21.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-04-17T00:58:21.000Z">2026年4月17日 00:58 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">嗨！为了庆祝其一周年纪念，我允许 Codex 在所有套餐中重置自己的速率限制。尽情享受所有新功能吧。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2044943514832871564" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2042299371602264319">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-04-09T17:51:28.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-04-09T17:51:28.000Z">2026年4月9日 17:51 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们做到了，跟$100套餐打个招呼吧！
+
+这应该是你们很多人的理想之选。它附带大量的Codex使用额度。而且是的，正如我昨天提到的，我们也在再次重置限额。让我们继续构建吧！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2042299371602264319" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2041655710346572085">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-04-07T23:13:48.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-04-07T23:13:48.000Z">2026年4月7日 23:13 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">现在每周有三百万人使用Codex——不到一个月前是两百万人。看到这样的增长真是太不可思议了。感谢你们所有人，也感谢我们所在的生态系统。为了庆祝，我们正在重置速率限制，以便你们继续构建，而且我们还会再次重置它们。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2041655710346572085" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2039248564967424483">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-04-01T07:48:39.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-04-01T07:48:39.000Z">2026年4月1日 07:48 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们的 Codex 仪表盘显示，越来越多用户触及速率限制。由于我们尚未完全理解其中原因，我做出了一个谨慎的决定：重置所有套餐的用量限制。尽情使用吧。
+
+我还想庆祝我们找到了一批欺诈账户，这些</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2039248564967424483" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2037346989244096581">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-03-27T01:52:28.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-03-27T01:52:28.000Z">2026年3月27日 01:52 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">大家好。我们已经重置了所有套餐的 Codex 使用限制，让大家都能体验我们刚刚推出的绝妙插件，而且确实已经有一阵子没有重置了！
+
+你可以用 Codex 构建无限的东西。玩得开心！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2037346989244096581" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2031605592352313567">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-03-11T05:38:13.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-03-11T05:38:13.000Z">2026年3月11日 05:38 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">好的，Codex 已恢复且稳定，我们应该能好一阵子了。重置按钮已按下，稍后应该就能看到</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2031605592352313567" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2031216405266481489">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-03-10T03:51:43.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-03-10T03:51:43.000Z">2026年3月10日 03:51 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">这个 Codex 问题现在已完全解决，并且在过去几个小时里保持稳定。
+
+你们已经习惯了，但没错，这意味着我们稍后就会重置速率限制。尽情享受吧。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2031216405266481489" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2030474136024400173">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-03-08T02:42:13.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-03-08T02:42:13.000Z">2026年3月8日 02:42 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们没有证据表明 Codex 使用量被过快消耗是一个普遍问题，但已有足够多的报告，我们已为 Plus 和 Pro 订阅用户重置了速率限制，同时将在接下来的 1-3 天内收尾我们的调查。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2030474136024400173" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2029308599835738218">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-03-04T21:30:47.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-03-04T21:30:47.000Z">2026年3月4日 21:30 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们发现了一个问题，导致约9%的Plus和Pro用户的Codex限制未获得2倍的促销提升。
+
+我们现在已修复此问题，并正在为所有Plus和Pro用户重置速率限制以示补偿。深表歉意，感谢大家的</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2029308599835738218" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2028649088594436225">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-03-03T01:50:07.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-03-03T01:50:07.000Z">2026年3月3日 01:50 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">Codex 已恢复上线。我们引入了一个问题，导致请求被拦截并因高网络风险而被拒绝。该问题在 ~8 分钟内被修复，我们现在已重新上线并全面正常运行。
+
+团队将重置速率限制，已经有一段时间了。这一次算我们请客。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2028649088594436225" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2004100061933064395">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-12-25T08:01:03.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-12-25T08:01:03.000Z">2025年12月25日 08:01 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">致Codex用户：为了感谢大家在过去的几个月里带给我们的欢乐，我们的第一份礼物是——**我们已经重置了速率限制，并将使用限制提升至平时的2倍，直至1月1日**。祝大家节日快乐，尽情编码！！
+
+快把这个消息传出去👀</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2004100061933064395" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2002137269134819610">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-12-19T22:01:37.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-12-19T22:01:37.000Z">2025年12月19日 22:01 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们重写了Codex中用于跟踪和计费使用量的底层系统，并在这一过程中重置了使用限制。回溯填充数据非常耗时，而提供免费使用更有趣。尽情享受吧！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2002137269134819610" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2001114683047317723">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-12-17T02:18:14.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-12-17T02:18:14.000Z">2025年12月17日 02:18 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">有一阵子没这么做了，但你们懂的。我们重置了所有人的使用额度，尽情享用更多 Codex，并对造成的不便深表歉意。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2001114683047317723" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="1995988609896513743">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-12-02T22:49:02.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-12-02T22:49:02.000Z">2025年12月2日 22:49 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们已经为所有 Codex 用户重置了使用限制，这有助于我们最快地缓解问题，团队将持续处理根本原因。这项调整将在接下来的 10 分钟内覆盖所有用户，敬请享用，并为造成的困惑致歉！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/1995988609896513743" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="1992370994028388670">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-11-22T23:13:56.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-11-22T23:13:56.000Z">2025年11月22日 23:13 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们已经为所有 Codex 用户重置了速率限制，以补偿过去数小时内美国及周边地区出现的异常高延迟。感谢团队在幕后辛勤工作，让 Codex 保持 24/7 全天候运行。
+
+如果你还没试过，我也强烈推荐试试 GPT-5.1-Codex-Max！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/1992370994028388670" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="1986166501435711936">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-11-05T20:19:29.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-11-05T20:19:29.000Z">2025年11月5日 20:19 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">Codex 服务中断已解决。
+
+我们在过去 45 分钟遭遇了一次轻微中断，随后在过去 30 分钟演变为全球性中断，目前问题已解决，我们已重置速率限制。如果你们仍然看到问题，请告诉我。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/1986166501435711936" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="1968163721034994139">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2025-09-17T04:02:52.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2025-09-17T04:02:52.000Z">2025年9月17日 04:02 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们已经为 gpt-5-codex 重置了所有人的使用限制，以便你们今天都能从中获益更多，同时也作为对我们之前配备额外 GPU 时速度变慢的补偿。我们将在本周内继续增加容量以保持速度。尽情享用吧！</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/1968163721034994139" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+        </ol>
+      </details>
+    </section>
+
+    <footer class="foot">
+      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 2026-09-23</p>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
