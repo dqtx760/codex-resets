@@ -1,0 +1,12 @@
+name = "codex-resets"
+compatibility_date = "2026-09-25"
+
+# 纯静态 Worker：无 main 脚本，Cloudflare 直接托管 ./
+# 排除项见 .assetsignore
+[assets]
+directory = "."
+
+# 自定义域名（原 codex-reset-weibo 的域名，已随旧 Worker 删除释放）
+[[routes]]
+pattern = "tick.dqtx.cc"
+custom_domain = true

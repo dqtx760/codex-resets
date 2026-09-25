@@ -1,0 +1,9 @@
+# 不随站点发布的内容
+.git
+.gitignore
+.assetsignore
+.wrangler
+dist
+build.py
+README.md
+wrangler.toml
