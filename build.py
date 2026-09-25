@@ -118,7 +118,7 @@ sponsors = [
     ("APIMart.AI", "官方图像与视频 API — 80% 优惠。GPT-Image-2 每张低至 $0.006。", "img", "https://codex-resets.com/apimart.png", "https://apimart.ai/"),
     ("codex指南", "Codex 使用指南与实战技巧合集。", "emoji", "📘", "https://gpt.dqtx.cc/"),
     ("GPT 代充", "GPT 会员低价代充值，稳定到账。", "emoji", "💳", "https://ai.dqtx.cc/"),
-    ("魔法", "稳定好用的魔法上网工具推荐。", "emoji", "✨", "https://77.dqtx.cc/"),
+    ("魔法工具", "稳定好用的魔法上网工具推荐。", "emoji", "✨", "https://77.dqtx.cc/"),
 ]
 sponsor_html = ""
 for name, desc, kind, val, href in sponsors:
@@ -298,7 +298,7 @@ document.querySelectorAll('[data-role=relative-time]').forEach(function(el){el.t
 var btn=document.querySelector('[data-role=reset-plea-button]');
 if(btn){
   var countEl=btn.querySelector('[data-role=reset-plea-count]');
-  var base=73983,key='codex-resets-thanks',extra=0;
+  var base=163049,key='codex-resets-thanks',extra=0;
   try{extra=parseInt(localStorage.getItem(key)||'0',10)||0}catch(e){}
   function render(){countEl.textContent=(base+extra).toLocaleString('en-US')}
   render();
@@ -388,10 +388,10 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <span class="hero-figure" data-role="relative-time" data-datetime="__LATEST__"></span>
         <div class="reset-plea" data-mode="thanks">
           <div class="reset-plea-action">
-            <button class="reset-plea-button" type="button" data-role="reset-plea-button" aria-label="感谢这次重置" title="感谢这次重置">
+            <button class="reset-plea-button" type="button" data-role="reset-plea-button" aria-label="求重置" title="求重置">
               <span class="reset-plea-button-emoji" aria-hidden="true">🙏</span>
-              <span class="reset-plea-button-label">感谢</span>
-              <span class="reset-plea-count" data-role="reset-plea-count">73,983</span>
+              <span class="reset-plea-button-label">求重置</span>
+              <span class="reset-plea-count" data-role="reset-plea-count">163,049</span>
             </button>
             <span class="reset-plea-bursts" data-role="reset-plea-bursts" aria-hidden="true"></span>
           </div>

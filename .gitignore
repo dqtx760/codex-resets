@@ -4,3 +4,5 @@ site.css
 dl.py
 extract.py
 css_extract.txt
+# Cloudflare 部署用本地目录（wrangler pages deploy dist）
+dist/
