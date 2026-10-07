@@ -103,15 +103,25 @@ if _avg is None and _gaps:
 AVG_TXT = ("%.1f天" % _avg) if _avg is not None else "—"
 MAX_TXT = ("%.1f天" % max(_gaps)) if _gaps else "—"
 
-# ---------- 备用重置额度（最近一次备用重置，Tibo 时间） ----------
-_banked = [r for r in raw if r["reset_type"] == "banked"]
-BANKED_HTML = ""
-if _banked:
-    BANKED_HTML = (
-        '          <p class="hero-sub hero-sub--banked">\n'
-        '            <strong>备用重置额度</strong><span aria-hidden="true">·</span>\n'
-        '            <span data-role="absolute-time">%s</span>\n'
-        '          </p>' % fmt_tibo(_banked[-1]["announced_at"]))
+# ---------- hero 页脚：最近一次重置的绝对时间（同原站；仅当最近一次为备用重置时加前缀标签） ----------
+def fmt_bj(iso):
+    """换算到北京时间（页面默认按"本地时间"渲染）。"""
+    dt = datetime.datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    try:
+        from zoneinfo import ZoneInfo
+        dt = dt.astimezone(ZoneInfo("Asia/Shanghai"))
+    except Exception:
+        dt = dt.astimezone(datetime.timezone(timedelta(hours=8)))
+    return "%d月%d日 %02d:%02d" % (dt.month, dt.day, dt.hour, dt.minute)
+
+latest = logs[0]
+_latest_is_banked = any(r["id"] == latest["tid"] and r["reset_type"] == "banked" for r in raw)
+_strong = '<strong>备用重置额度</strong><span aria-hidden="true">·</span>\n            ' if _latest_is_banked else ''
+LATEST_TIME_HTML = (
+    '          <p class="hero-sub">\n'
+    '            ' + _strong + '<span data-role="absolute-time" data-datetime="%s">%s</span>\n'
+    '          </p>'
+) % (latest["datetime"], fmt_bj(latest["datetime"]))
 
 # ---------- 已安排重置卡片（仅当 API 有 scheduled_reset） ----------
 SCHED_HTML = ""
@@ -135,7 +145,7 @@ if _sched:
            (_sched.get("source") or {}).get("url", "https://x.com/thsottiaux")))
 
 print("resets:", len(resets), "logs:", len(logs), "total:", TOTAL, "avg:", AVG_TXT, "max:", MAX_TXT,
-      "banked:", _banked[-1]["announced_at"][:10] if _banked else None, "sched:", bool(_sched))
+      "latest:", latest["datetime"], "banked_latest:", _latest_is_banked, "sched:", bool(_sched))
 
 # ---------- calendar grid ----------
 start = date(2025, 9, 14)  # Sunday
@@ -389,6 +399,27 @@ footer.foot a{color:var(--ink-2)}
 function rel(d){var diff=Date.now()-new Date(d).getTime();var m=Math.floor(diff/60000);if(m<1)return'刚刚';if(m<60)return m+'分钟前';var h=Math.floor(m/60);if(h<24)return h+'小时前';var d2=Math.floor(h/24);if(d2<30)return d2+'天前';var mo=Math.floor(d2/30);return mo+'个月前'}
 function init(){
 document.querySelectorAll('[data-role=relative-time]').forEach(function(el){el.textContent=rel(el.dataset.datetime)});
+var tSpans=[].slice.call(document.querySelectorAll('[data-role=absolute-time]'));
+function fmtAbs(iso,tibo){
+  try{
+    var d=new Date(iso),o={month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false};
+    if(tibo)o.timeZone='America/Los_Angeles';
+    var p={};new Intl.DateTimeFormat('zh-CN',o).formatToParts(d).forEach(function(x){p[x.type]=x.value});
+    return parseInt(p.month,10)+'月'+parseInt(p.day,10)+'日 '+p.hour+':'+p.minute;
+  }catch(e){return null}
+}
+var tbtns=[].slice.call(document.querySelectorAll('.time-toggle'));
+if(tbtns.length===2){
+  var pref='local';try{pref=localStorage.getItem('codex-resets-time')||'local'}catch(e){}
+  function applyTime(){
+    var tibo=pref==='tibo';
+    tbtns.forEach(function(b,i){var on=((i===0)===tibo);b.classList.toggle('is-active',on);b.setAttribute('aria-pressed',String(on))});
+    tSpans.forEach(function(el){var t=fmtAbs(el.dataset.datetime,tibo);if(t)el.textContent=t});
+  }
+  tbtns[0].addEventListener('click',function(){pref='tibo';try{localStorage.setItem('codex-resets-time',pref)}catch(e){}applyTime()});
+  tbtns[1].addEventListener('click',function(){pref='local';try{localStorage.setItem('codex-resets-time',pref)}catch(e){}applyTime()});
+  applyTime();
+}
 var btn=document.querySelector('[data-role=reset-plea-button]');
 if(btn){
   var countEl=btn.querySelector('[data-role=reset-plea-count]');
@@ -464,8 +495,8 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           </button>
         </div>
         <div class="time-setting" role="group" aria-label="时间显示">
-          <button class="time-toggle is-active" type="button" aria-pressed="true">Tibo 时间</button>
-          <button class="time-toggle" type="button" aria-pressed="false">本地时间</button>
+          <button class="time-toggle" type="button" aria-pressed="false">Tibo 时间</button>
+          <button class="time-toggle is-active" type="button" aria-pressed="true">本地时间</button>
         </div>
       </div>
 
@@ -485,7 +516,7 @@ __SCHEDULED__
           </div>
         </div>
         <div class="hero-footer">
-__BANKED__
+__LATESTTIME__
         </div>
       </div>
     </section>
@@ -565,7 +596,7 @@ HTML = (HTML
     .replace("__AVG__", AVG_TXT)
     .replace("__MAXWAIT__", MAX_TXT)
     .replace("__SCHEDULED__", SCHED_HTML)
-    .replace("__BANKED__", BANKED_HTML)
+    .replace("__LATESTTIME__", LATEST_TIME_HTML)
     .replace("__DATA_DATE__", date.today().isoformat()))
 
 open(ROOT + r"\index.html", "w", encoding="utf-8").write(HTML)

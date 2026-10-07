@@ -155,6 +155,27 @@ footer.foot a{color:var(--ink-2)}
 function rel(d){var diff=Date.now()-new Date(d).getTime();var m=Math.floor(diff/60000);if(m<1)return'刚刚';if(m<60)return m+'分钟前';var h=Math.floor(m/60);if(h<24)return h+'小时前';var d2=Math.floor(h/24);if(d2<30)return d2+'天前';var mo=Math.floor(d2/30);return mo+'个月前'}
 function init(){
 document.querySelectorAll('[data-role=relative-time]').forEach(function(el){el.textContent=rel(el.dataset.datetime)});
+var tSpans=[].slice.call(document.querySelectorAll('[data-role=absolute-time]'));
+function fmtAbs(iso,tibo){
+  try{
+    var d=new Date(iso),o={month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false};
+    if(tibo)o.timeZone='America/Los_Angeles';
+    var p={};new Intl.DateTimeFormat('zh-CN',o).formatToParts(d).forEach(function(x){p[x.type]=x.value});
+    return parseInt(p.month,10)+'月'+parseInt(p.day,10)+'日 '+p.hour+':'+p.minute;
+  }catch(e){return null}
+}
+var tbtns=[].slice.call(document.querySelectorAll('.time-toggle'));
+if(tbtns.length===2){
+  var pref='local';try{pref=localStorage.getItem('codex-resets-time')||'local'}catch(e){}
+  function applyTime(){
+    var tibo=pref==='tibo';
+    tbtns.forEach(function(b,i){var on=((i===0)===tibo);b.classList.toggle('is-active',on);b.setAttribute('aria-pressed',String(on))});
+    tSpans.forEach(function(el){var t=fmtAbs(el.dataset.datetime,tibo);if(t)el.textContent=t});
+  }
+  tbtns[0].addEventListener('click',function(){pref='tibo';try{localStorage.setItem('codex-resets-time',pref)}catch(e){}applyTime()});
+  tbtns[1].addEventListener('click',function(){pref='local';try{localStorage.setItem('codex-resets-time',pref)}catch(e){}applyTime()});
+  applyTime();
+}
 var btn=document.querySelector('[data-role=reset-plea-button]');
 if(btn){
   var countEl=btn.querySelector('[data-role=reset-plea-count]');
@@ -230,8 +251,8 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           </button>
         </div>
         <div class="time-setting" role="group" aria-label="时间显示">
-          <button class="time-toggle is-active" type="button" aria-pressed="true">Tibo 时间</button>
-          <button class="time-toggle" type="button" aria-pressed="false">本地时间</button>
+          <button class="time-toggle" type="button" aria-pressed="false">Tibo 时间</button>
+          <button class="time-toggle is-active" type="button" aria-pressed="true">本地时间</button>
         </div>
       </div>
 
@@ -251,9 +272,8 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           </div>
         </div>
         <div class="hero-footer">
-          <p class="hero-sub hero-sub--banked">
-            <strong>备用重置额度</strong><span aria-hidden="true">·</span>
-            <span data-role="absolute-time">9月29日 12:00</span>
+          <p class="hero-sub">
+            <span data-role="absolute-time" data-datetime="2026-10-07T03:35:09.000Z">10月7日 11:35</span>
           </p>
         </div>
       </div>
