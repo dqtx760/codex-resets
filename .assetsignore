@@ -3,7 +3,18 @@
 .gitignore
 .assetsignore
 .wrangler
+.workbuddy
 dist
 build.py
 README.md
 wrangler.toml
+
+# 本地中间/源文件（防止 source 泄露到线上）
+codex_zh.html
+codex_now.html
+site.css
+dl.py
+extract.py
+css_extract.txt
+thsottiaux-avatar.jpg
+assets

@@ -116,7 +116,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-bo
 .cg-weekdays{display:grid;grid-template-rows:20px repeat(7,var(--cell-size));font-size:10px;color:var(--ink-3);font-family:var(--font-mono)}
 .cg-weekday{display:flex;align-items:center}
 .cg-scroll{overflow-x:auto;padding-bottom:6px}
-.cg-grid{display:grid;grid-template-columns:repeat(54,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
+.cg-grid{display:grid;grid-template-columns:repeat(56,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
 .cg-month{grid-row:1;font-family:var(--font-mono);font-size:10px;color:var(--ink-3);align-self:end}
 .cg-cell{width:var(--cell-size);height:var(--cell-size);background:var(--cg-empty);border:none;border-radius:6px;padding:0;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
 .cg-cell[data-level="1"]{background:var(--cg-fill);border:1.5px solid var(--ink);box-shadow:1.5px 1.5px 0 var(--shadow-ink)}
@@ -235,17 +235,11 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         </div>
       </div>
 
-      <div class="scheduled-card">
-        <div>
-          <div class="sc-label">已安排重置</div>
-          <div class="sc-main">约 9 小时内 · 最晚 9月23日周三 14:59</div>
-        </div>
-        <a href="https://x.com/dqtx760" target="_blank" rel="noopener noreferrer">查看公告 &nearr;</a>
-      </div>
+
 
       <div class="hero-card">
         <span class="hero-label">最近一次 Codex 重置</span>
-        <span class="hero-figure" data-role="relative-time" data-datetime="2026-09-22T18:23:37.000Z"></span>
+        <span class="hero-figure" data-role="relative-time" data-datetime="2026-10-07T03:35:09.000Z"></span>
         <div class="reset-plea" data-mode="thanks">
           <div class="reset-plea-action">
             <button class="reset-plea-button" type="button" data-role="reset-plea-button" aria-label="求重置" title="求重置">
@@ -259,15 +253,15 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <div class="hero-footer">
           <p class="hero-sub hero-sub--banked">
             <strong>备用重置额度</strong><span aria-hidden="true">·</span>
-            <span data-role="absolute-time">9月22日 11:23</span>
+            <span data-role="absolute-time">9月29日 12:00</span>
           </p>
         </div>
       </div>
     </section>
 
     <dl class="stat-row">
-      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">54</dd></div>
-      <div class="stat-tile stat-tile--rose"><dt>平均重置间隔</dt><dd class="mono">7.0天</dd></div>
+      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">58</dd></div>
+      <div class="stat-tile stat-tile--rose"><dt>平均重置间隔</dt><dd class="mono">6.8天</dd></div>
       <div class="stat-tile stat-tile--sky"><dt>最长等待</dt><dd class="mono">67.7天</dd></div>
     </dl>
 
@@ -302,7 +296,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <div class="cg-container">
           <div class="cg-weekdays" style="grid-template-rows:20px repeat(7,var(--cell-size))"><span class="cg-weekday" style="grid-row:2"></span><span class="cg-weekday" style="grid-row:3">周一</span><span class="cg-weekday" style="grid-row:4"></span><span class="cg-weekday" style="grid-row:5">周三</span><span class="cg-weekday" style="grid-row:6"></span><span class="cg-weekday" style="grid-row:7">周五</span><span class="cg-weekday" style="grid-row:8"></span></div>
           <div class="cg-scroll">
-            <div class="cg-grid" style="grid-template-columns:repeat(54,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
+            <div class="cg-grid" style="grid-template-columns:repeat(56,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
               <span class="cg-month" style="grid-column:1 / span 2;grid-row:1">9月</span>
           <span class="cg-month" style="grid-column:4 / span 3;grid-row:1">10月</span>
           <span class="cg-month" style="grid-column:8 / span 4;grid-row:1">11月</span>
@@ -315,7 +309,8 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           <span class="cg-month" style="grid-column:39 / span 3;grid-row:1">6月</span>
           <span class="cg-month" style="grid-column:43 / span 3;grid-row:1">7月</span>
           <span class="cg-month" style="grid-column:47 / span 4;grid-row:1">8月</span>
-          <span class="cg-month" style="grid-column:52 / span 2;grid-row:1">9月</span>
+          <span class="cg-month" style="grid-column:52 / span 3;grid-row:1">9月</span>
+          <span class="cg-month" style="grid-column:56 / span 0;grid-row:1">10月</span>
               <button type="button" class="cg-cell" data-level="0" data-date="2025-09-14" style="grid-column:1;grid-row:2" aria-label="2025-09-14：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2025-09-15" style="grid-column:1;grid-row:3" aria-label="2025-09-15：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2025-09-16" style="grid-column:1;grid-row:4" aria-label="2025-09-16：未重置"></button>
@@ -567,7 +562,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 
 ...但气氛很不错...
 
-我已将所有付费计划的Codex速率限制重置，以庆祝愉快的一周，让大家能用GPT-5.5构建" href="https://x.com/thsottiaux/status/2048997818673537399" target="_blank" rel="noopener noreferrer"></a>
+我已将所有付费计划的Codex速率限制重置，以庆祝愉快的一周，让大家能用GPT-5.5构建…" href="https://x.com/thsottiaux/status/2048997818673537399" target="_blank" rel="noopener noreferrer"></a>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-04-29" style="grid-column:33;grid-row:5" aria-label="2026-04-29：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-04-30" style="grid-column:33;grid-row:6" aria-label="2026-04-30：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-05-01" style="grid-column:33;grid-row:7" aria-label="2026-05-01：未重置"></button>
@@ -662,7 +657,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 
 既然现在你们注意到了，我简单更新一下 ChatGPT Work、Codex 以及我们昨天分享的所有内容。
 
-我们在过" href="https://x.com/thsottiaux/status/2075641131002700120" target="_blank" rel="noopener noreferrer"></a>
+我们在过…" href="https://x.com/thsottiaux/status/2075641131002700120" target="_blank" rel="noopener noreferrer"></a>
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-11" style="grid-column:43;grid-row:8" title="推出……又一次为所有 ChatGPT Work 和 Codex 用户重置使用限制。应该在接下来的 30 分钟内生效。祝你们度过一个愉快的周末。
 
 感谢你们把我们的系统推到了绝对极限，我们从未见过流量增长得如此之快。继续提供反馈" href="https://x.com/thsottiaux/status/2075820987833274448" target="_blank" rel="noopener noreferrer"></a>
@@ -705,7 +700,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-28" style="grid-column:46;grid-row:4" title="回到笔记本电脑前了。Codex 和 ChatGPT Work 的所有付费用户的用量限制已经重置。Weeeeeeee。今天是好日子！" href="https://x.com/thsottiaux/status/2081940052154933696" target="_blank" rel="noopener noreferrer"></a>
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-07-29" style="grid-column:46;grid-row:5" title="Sol 的朋友们，大家好！我已经为所有 ChatGPT Work 和 Codex 用户重置了使用限制。同时，快速更新一下 GPT-5.6 Sol 的使用限制情况。
 
-过去几周，很多人告诉我们，Sol 消耗你们 Codex 限制的速度比预期更" href="https://x.com/thsottiaux/status/2082317452755751098" target="_blank" rel="noopener noreferrer"></a>
+过去几周，很多人告诉我们，Sol 消耗你们 Codex 限制的速度比预期更…" href="https://x.com/thsottiaux/status/2082317452755751098" target="_blank" rel="noopener noreferrer"></a>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-07-30" style="grid-column:46;grid-row:6" aria-label="2026-07-30：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-07-31" style="grid-column:46;grid-row:7" aria-label="2026-07-31：未重置"></button>
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-01" style="grid-column:46;grid-row:8" title="为了庆祝高效一周并让你在这个周末运行 100,000 个 Luna 线程……没错……等着吧……我已经重置了 Codex 和 ChatGPT Work 的使用限制。
@@ -752,7 +747,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 
 请继续阅读，了解 Codex 用量限制的最新更新。团队一直在夜以继日地工作，处理了数千份报告并发布了修复。
 
-根据你使用 Codex 的方式，你应该会看到你的用" href="https://x.com/thsottiaux/status/2093801758665715784" target="_blank" rel="noopener noreferrer"></a>
+根据你使用 Codex 的方式，你应该会看到你的用…" href="https://x.com/thsottiaux/status/2093801758665715784" target="_blank" rel="noopener noreferrer"></a>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-08-30" style="grid-column:51;grid-row:2" aria-label="2026-08-30：未重置"></button>
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-08-31" style="grid-column:51;grid-row:3" title="我昨天想说的是，我们达到了2500万活跃用户。为了庆祝，我们现在已为ChatGPT Work和Codex的所有付费订阅重置了使用额度。
 
@@ -765,7 +760,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           <button type="button" class="cg-cell" data-level="0" data-date="2026-09-04" style="grid-column:51;grid-row:7" aria-label="2026-09-04：未重置"></button>
           <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-09-05" style="grid-column:51;grid-row:8" title="因为我们对Astra今天提前上线感到无比兴奋，而你们一直对我们超级耐心（其实并没有，但没关系！）……我们将在今天为所有Plus、Pro和Business用户进行完整的累积额度重置。额度将在本日结束时到账。
 
-祝Astra日快乐，享受一个美好" href="https://x.com/thsottiaux/status/2096035437299237298" target="_blank" rel="noopener noreferrer"></a>
+祝Astra日快乐，享受一个美好…" href="https://x.com/thsottiaux/status/2096035437299237298" target="_blank" rel="noopener noreferrer"></a>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-09-06" style="grid-column:52;grid-row:2" aria-label="2026-09-06：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-09-07" style="grid-column:52;grid-row:3" aria-label="2026-09-07：未重置"></button>
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-09-08" style="grid-column:52;grid-row:4" title="所有用户的用量限制已重置。祝大家享受与Astra共度的这一周。" href="https://x.com/thsottiaux/status/2097174560412246215" target="_blank" rel="noopener noreferrer"></a>
@@ -784,11 +779,27 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           <button type="button" class="cg-cell" data-level="0" data-date="2026-09-21" style="grid-column:54;grid-row:3" aria-label="2026-09-21：未重置"></button>
           <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-09-22" style="grid-column:54;grid-row:4" title="GPT-6 Sol 和 Luna 出来了。它们不仅在各方面都有非常显著的提升，而且在写作和那种“你一用就知道”的整体质量上也是如此。
 
-我们还将 API 价格永久下调 50%，让这两者都能适用于大量新的使用场景，也让你的用量更经用，即使是在" href="https://x.com/thsottiaux/status/2102463847714247142" target="_blank" rel="noopener noreferrer"></a>
+我们还将 API 价格永久下调 50%，让这两者都能适用于大量新的使用场景，也让你的用量更经用，即使是在…" href="https://x.com/thsottiaux/status/2102463847714247142" target="_blank" rel="noopener noreferrer"></a>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-09-23" style="grid-column:54;grid-row:5" aria-label="2026-09-23：未重置"></button>
-          <span class="cg-cell cg-cell--future" style="grid-column:54;grid-row:6" aria-hidden="true"></span>
-          <span class="cg-cell cg-cell--future" style="grid-column:54;grid-row:7" aria-hidden="true"></span>
-          <span class="cg-cell cg-cell--future" style="grid-column:54;grid-row:8" aria-hidden="true"></span>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-24" style="grid-column:54;grid-row:6" aria-label="2026-09-24：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-25" style="grid-column:54;grid-row:7" aria-label="2026-09-25：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-09-26" style="grid-column:54;grid-row:8" title="所有重置均已传播。就这些。祝周末愉快。" href="https://x.com/thsottiaux/status/2103911959544610829" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-27" style="grid-column:55;grid-row:2" aria-label="2026-09-27：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-28" style="grid-column:55;grid-row:3" aria-label="2026-09-28：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="banked" data-date="2026-09-29" style="grid-column:55;grid-row:4" title="@theo 嘘嘘嘘嘘嘘" href="https://x.com/thsottiaux/status/2105120226027450685" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-09-30" style="grid-column:55;grid-row:5" aria-label="2026-09-30：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-01" style="grid-column:55;grid-row:6" aria-label="2026-10-01：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-10-02" style="grid-column:55;grid-row:7" title="重置已全部传播。享受。" href="https://x.com/thsottiaux/status/2106131810921136451" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-03" style="grid-column:55;grid-row:8" aria-label="2026-10-03：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-04" style="grid-column:56;grid-row:2" aria-label="2026-10-04：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-05" style="grid-column:56;grid-row:3" aria-label="2026-10-05：未重置"></button>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-06" style="grid-column:56;grid-row:4" aria-label="2026-10-06：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-10-07" style="grid-column:56;grid-row:5" title="我们发布了四件被评为良好到优秀的东西以及一些数学证明，但投票结果很明确，社区要求一次重置。我确实校准了它，而且*似乎*游戏被操纵成对重置有利，但目前规则就是这样。
+
+因此……重置已经" href="https://x.com/thsottiaux/status/2107676072871600470" target="_blank" rel="noopener noreferrer"></a>
+          <span class="cg-cell cg-cell--future" style="grid-column:56;grid-row:6" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:56;grid-row:7" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:56;grid-row:8" aria-hidden="true"></span>
             </div>
           </div>
         </div>
@@ -801,6 +812,60 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <p class="section-sub">每次公告，都留有记录</p>
       </div>
       <ol class="log-list">
+    <li class="log-item" data-tweet-id="2107676072871600470">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-10-07T03:35:09.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-10-07T03:35:09.000Z">2026年10月7日 03:35 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">我们发布了四件被评为良好到优秀的东西以及一些数学证明，但投票结果很明确，社区要求一次重置。我确实校准了它，而且*似乎*游戏被操纵成对重置有利，但目前规则就是这样。
+
+因此……重置已经</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2107676072871600470" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="2106131810921136451">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-10-02T21:18:48.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-10-02T21:18:48.000Z">2026年10月2日 21:18 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">重置已全部传播。享受。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2106131810921136451" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+    <li class="log-item" data-tweet-id="observed-20260929T190000Z">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-29T19:00:00.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-29T19:00:00.000Z">2026年9月29日 19:00 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">@theo 嘘嘘嘘嘘嘘</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2105120226027450685" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
+      </ol>
+      <details class="log-more">
+        <summary class="log-more-toggle">
+          <span class="log-more-label-closed">查看全部 58 次重置</span>
+          <span class="log-more-label-open">收起</span>
+          <span class="log-more-arrow" aria-hidden="true">&darr;</span>
+        </summary>
+        <ol class="log-list log-list--more" start="4">
+    <li class="log-item" data-tweet-id="2103911959544610829">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-09-26T18:17:54.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-09-26T18:17:54.000Z">2026年9月26日 18:17 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">所有重置均已传播。就这些。祝周末愉快。</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2103911959544610829" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
     <li class="log-item" data-tweet-id="2102463847714247142">
       <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
       <div class="log-bubble">
@@ -838,14 +903,6 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <a class="log-item-link" href="https://x.com/thsottiaux/status/2097174560412246215" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
       </div>
     </li>
-      </ol>
-      <details class="log-more">
-        <summary class="log-more-toggle">
-          <span class="log-more-label-closed">查看全部 54 次重置</span>
-          <span class="log-more-label-open">收起</span>
-          <span class="log-more-arrow" aria-hidden="true">&darr;</span>
-        </summary>
-        <ol class="log-list log-list--more" start="4">
     <li class="log-item" data-tweet-id="2096035437299237298">
       <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
       <div class="log-bubble">
@@ -1521,7 +1578,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
     </section>
 
     <footer class="foot">
-      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 2026-09-23</p>
+      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 2026-10-07</p>
     </footer>
   </main>
 </div>

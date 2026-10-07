@@ -1,52 +1,146 @@
 # -*- coding: utf-8 -*-
-import re, json, html, datetime
+import re, json, html, ssl, datetime, urllib.request
 from datetime import date, timedelta
 
 ROOT = r"C:\Users\Administrator\WorkBuddy\2026-09-23-13-54-31"
-src = open(ROOT + r"\codex_zh.html", encoding="utf-8").read()
+API = "https://codex-resets.com/api/v1"
 
-# ---------- parse reset calendar cells ----------
+def _opener(proxy):
+    ctx = ssl.create_default_context(); ctx.check_hostname = False; ctx.verify_mode = ssl.CERT_NONE
+    handler = urllib.request.ProxyHandler({} if proxy is None else {"http": proxy, "https": proxy})
+    return urllib.request.build_opener(urllib.request.HTTPSHandler(context=ctx), handler)
+
+def http_get(url, accept):
+    """优先直连，失败依次走本机常见代理端口（无人值守的每日任务更稳）。"""
+    last = None
+    for proxy in (None, "http://127.0.0.1:7897", "http://127.0.0.1:7890"):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": accept})
+            with _opener(proxy).open(req, timeout=30) as r:
+                return r.read()
+        except Exception as e:
+            last = e
+    raise SystemExit("拉取失败(%s): %s" % (url, last))
+
+def api_get(path):
+    return json.loads(http_get(API + path, "application/json"))
+
+def clean_text(t):
+    """去掉原文结尾的 t.co 短链（原站正文不带链接）。"""
+    return re.sub(r"\s*https?://\S+\s*$", "", t).strip()
+
+def fmt_tibo(iso):
+    """换算到 Tibo 时区（America/Los_Angeles），显示为 M月D日 HH:MM。"""
+    dt = datetime.datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    try:
+        from zoneinfo import ZoneInfo
+        dt = dt.astimezone(ZoneInfo("America/Los_Angeles"))
+    except Exception:
+        dt = dt.astimezone(datetime.timezone(timedelta(hours=-7)))
+    return "%d月%d日 %02d:%02d" % (dt.month, dt.day, dt.hour, dt.minute)
+
+def fetch_zh_texts():
+    """从中文版页面抓 {id: 中文正文}。API 只给英文原文，译文以页面为准；失败返回空表。"""
+    try:
+        page = http_get("https://codex-resets.com/zh-CN", "text/html").decode("utf-8", "replace")
+    except Exception:
+        return {}
+    out = {}
+    for tid, blk in re.findall(r'data-tweet-id="([^"]+)"(.*?)</li>', page, re.S):
+        m = re.search(r'<p class="log-item-text"[^>]*>(.*?)</p>', blk, re.S)
+        if m:
+            out[tid] = html.unescape(m.group(1)).strip()
+    return out
+
+ZH = fetch_zh_texts()
+if not ZH:
+    print("WARN: 中文译文抓取失败，正文回退英文原文")
+
+def reset_text(r):
+    return ZH.get(r["id"]) or clean_text(r["text"])
+
+status = api_get("/status")["data"]
+
+# ---------- 拉取全部重置记录（游标分页，升序） ----------
+raw, cursor = [], None
+while True:
+    page = api_get("/resets?limit=100&order=asc" + ("&cursor=" + cursor if cursor else ""))
+    raw += page["data"]
+    pg = page.get("pagination") or {}
+    cursor = pg.get("next_cursor") if pg.get("has_more") else None
+    if not cursor:
+        break
+
+# ---------- 日历标记：日期 -> 该日重置 ----------
 resets = {}  # date -> dict(level,type,href,snippet)
-for attrs in re.findall(r'class="cg-cell[^"]*"([^>]*)>', src):
-    dm = re.search(r'data-date="([^"]+)"', attrs)
-    if not dm:
-        continue
-    d = dm.group(1)
-    lvl = re.search(r'data-level="([^"]+)"', attrs)
-    rt = re.search(r'data-reset-type="([^"]+)"', attrs)
-    href = re.search(r'href="([^"]+)"', attrs)
-    snip = re.search(r'data-snippet="([^"]*)"', attrs)
+for r in raw:
+    d = r["announced_at"][:10]
+    if d in resets and resets[d]["type"] == "regular":
+        continue  # 同日多条时优先展示常规重置
     resets[d] = {
-        "level": lvl.group(1) if lvl else "0",
-        "type": rt.group(1) if rt else "regular",
-        "href": href.group(1) if href else "",
-        "snippet": snip.group(1) if snip else "",
+        "level": "1",
+        "type": r["reset_type"],
+        "href": (r.get("source") or {}).get("url", ""),
+        "snippet": reset_text(r),
     }
 
-# ---------- parse log items (54) ----------
-logs = []
-for block in re.findall(r'<li class="log-item"[^>]*data-tweet-id="([^"]+)"[^>]*>(.*?)</li>', src, re.S):
-    tid, b = block
-    dtm = re.search(r'data-role="relative-time" data-datetime="([^"]+)"', b)
-    txt = re.search(r'<p class="log-item-text"[^>]*>(.*?)</p>', b, re.S)
-    link = re.search(r'<a class="log-item-link" href="([^"]+)"', b)
-    if not (dtm and txt):
-        continue
-    text = html.unescape(txt.group(1))
-    text = re.sub(r'\s*\n\s*\n\s*', '\n\n', text).strip()
-    logs.append({
-        "tid": tid,
-        "datetime": dtm.group(1),
-        "text": text,
-        "link": link.group(1) if link else "",
-    })
+# ---------- 公告日志（最新在前） ----------
+logs = [{
+    "tid": r["id"],
+    "datetime": r["announced_at"],
+    "text": reset_text(r),
+    "link": (r.get("source") or {}).get("url", ""),
+} for r in raw]
+logs.sort(key=lambda x: x["datetime"], reverse=True)
 
-print("resets:", len(resets), "logs:", len(logs))
+# ---------- 统计 ----------
+_dts = sorted(datetime.datetime.fromisoformat(r["announced_at"].replace("Z", "+00:00")) for r in raw)
+_gaps = [(_dts[i + 1] - _dts[i]).total_seconds() / 86400 for i in range(len(_dts) - 1)]
+TOTAL = len(raw)
+_avg = (status.get("stats") or {}).get("avg_interval_days")
+if _avg is None and _gaps:
+    _avg = sum(_gaps) / len(_gaps)
+AVG_TXT = ("%.1f天" % _avg) if _avg is not None else "—"
+MAX_TXT = ("%.1f天" % max(_gaps)) if _gaps else "—"
+
+# ---------- 备用重置额度（最近一次备用重置，Tibo 时间） ----------
+_banked = [r for r in raw if r["reset_type"] == "banked"]
+BANKED_HTML = ""
+if _banked:
+    BANKED_HTML = (
+        '          <p class="hero-sub hero-sub--banked">\n'
+        '            <strong>备用重置额度</strong><span aria-hidden="true">·</span>\n'
+        '            <span data-role="absolute-time">%s</span>\n'
+        '          </p>' % fmt_tibo(_banked[-1]["announced_at"]))
+
+# ---------- 已安排重置卡片（仅当 API 有 scheduled_reset） ----------
+SCHED_HTML = ""
+_sched = status.get("scheduled_reset")
+if _sched:
+    _sf = _sched.get("scheduled_for") or _sched.get("announced_at")
+    _sdt = datetime.datetime.fromisoformat(_sf.replace("Z", "+00:00")).astimezone(
+        datetime.timezone(timedelta(hours=-7)))
+    _now = datetime.datetime.now(datetime.timezone(timedelta(hours=-7)))
+    _hours = max(0, (_sdt - _now).total_seconds() / 3600)
+    _wd = "一二三四五六日"[_sdt.weekday()]
+    SCHED_HTML = (
+        '      <div class="scheduled-card">\n'
+        '        <div>\n'
+        '          <div class="sc-label">已安排重置</div>\n'
+        '          <div class="sc-main">约 %d 小时内 · 最晚 %d月%d日周%s %02d:%02d</div>\n'
+        '        </div>\n'
+        '        <a href="%s" target="_blank" rel="noopener noreferrer">查看公告 &nearr;</a>\n'
+        '      </div>'
+        % (_hours, _sdt.month, _sdt.day, _wd, _sdt.hour, _sdt.minute,
+           (_sched.get("source") or {}).get("url", "https://x.com/thsottiaux")))
+
+print("resets:", len(resets), "logs:", len(logs), "total:", TOTAL, "avg:", AVG_TXT, "max:", MAX_TXT,
+      "banked:", _banked[-1]["announced_at"][:10] if _banked else None, "sched:", bool(_sched))
 
 # ---------- calendar grid ----------
 start = date(2025, 9, 14)  # Sunday
-today = date(2026, 9, 23)
-WEEKS = 54
+today = date.today()
+WEEKS = max(1, (today - start).days // 7 + 1)
 cells_html = []
 for w in range(WEEKS):
     for d in range(7):
@@ -256,7 +350,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-bo
 .cg-weekdays{display:grid;grid-template-rows:20px repeat(7,var(--cell-size));font-size:10px;color:var(--ink-3);font-family:var(--font-mono)}
 .cg-weekday{display:flex;align-items:center}
 .cg-scroll{overflow-x:auto;padding-bottom:6px}
-.cg-grid{display:grid;grid-template-columns:repeat(54,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
+.cg-grid{display:grid;grid-template-columns:repeat(__WEEKS__,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
 .cg-month{grid-row:1;font-family:var(--font-mono);font-size:10px;color:var(--ink-3);align-self:end}
 .cg-cell{width:var(--cell-size);height:var(--cell-size);background:var(--cg-empty);border:none;border-radius:6px;padding:0;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
 .cg-cell[data-level="1"]{background:var(--cg-fill);border:1.5px solid var(--ink);box-shadow:1.5px 1.5px 0 var(--shadow-ink)}
@@ -375,13 +469,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         </div>
       </div>
 
-      <div class="scheduled-card">
-        <div>
-          <div class="sc-label">已安排重置</div>
-          <div class="sc-main">约 9 小时内 · 最晚 9月23日周三 14:59</div>
-        </div>
-        <a href="https://x.com/dqtx760" target="_blank" rel="noopener noreferrer">查看公告 &nearr;</a>
-      </div>
+__SCHEDULED__
 
       <div class="hero-card">
         <span class="hero-label">最近一次 Codex 重置</span>
@@ -397,18 +485,15 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           </div>
         </div>
         <div class="hero-footer">
-          <p class="hero-sub hero-sub--banked">
-            <strong>备用重置额度</strong><span aria-hidden="true">·</span>
-            <span data-role="absolute-time">9月22日 11:23</span>
-          </p>
+__BANKED__
         </div>
       </div>
     </section>
 
     <dl class="stat-row">
-      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">54</dd></div>
-      <div class="stat-tile stat-tile--rose"><dt>平均重置间隔</dt><dd class="mono">7.0天</dd></div>
-      <div class="stat-tile stat-tile--sky"><dt>最长等待</dt><dd class="mono">67.7天</dd></div>
+      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">__TOTAL__</dd></div>
+      <div class="stat-tile stat-tile--rose"><dt>平均重置间隔</dt><dd class="mono">__AVG__</dd></div>
+      <div class="stat-tile stat-tile--sky"><dt>最长等待</dt><dd class="mono">__MAXWAIT__</dd></div>
     </dl>
 
     <div class="sponsor-mobile" aria-label="推荐工具">__SPONSORS__</div>
@@ -426,7 +511,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <div class="cg-container">
           <div class="cg-weekdays" style="grid-template-rows:20px repeat(7,var(--cell-size))"><span class="cg-weekday" style="grid-row:2"></span><span class="cg-weekday" style="grid-row:3">周一</span><span class="cg-weekday" style="grid-row:4"></span><span class="cg-weekday" style="grid-row:5">周三</span><span class="cg-weekday" style="grid-row:6"></span><span class="cg-weekday" style="grid-row:7">周五</span><span class="cg-weekday" style="grid-row:8"></span></div>
           <div class="cg-scroll">
-            <div class="cg-grid" style="grid-template-columns:repeat(54,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
+            <div class="cg-grid" style="grid-template-columns:repeat(__WEEKS__,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
               __MONTHS__
               __CELLS__
             </div>
@@ -445,7 +530,7 @@ __FIRST3__
       </ol>
       <details class="log-more">
         <summary class="log-more-toggle">
-          <span class="log-more-label-closed">查看全部 54 次重置</span>
+          <span class="log-more-label-closed">查看全部 __TOTAL__ 次重置</span>
           <span class="log-more-label-open">收起</span>
           <span class="log-more-arrow" aria-hidden="true">&darr;</span>
         </summary>
@@ -456,7 +541,7 @@ __REST__
     </section>
 
     <footer class="foot">
-      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 2026-09-23</p>
+      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 __DATA_DATE__</p>
     </footer>
   </main>
 </div>
@@ -474,7 +559,14 @@ HTML = (HTML
     .replace("__MONTHS__", MON)
     .replace("__CELLS__", CAL)
     .replace("__FIRST3__", first3)
-    .replace("__REST__", rest))
+    .replace("__REST__", rest)
+    .replace("__WEEKS__", str(WEEKS))
+    .replace("__TOTAL__", str(TOTAL))
+    .replace("__AVG__", AVG_TXT)
+    .replace("__MAXWAIT__", MAX_TXT)
+    .replace("__SCHEDULED__", SCHED_HTML)
+    .replace("__BANKED__", BANKED_HTML)
+    .replace("__DATA_DATE__", date.today().isoformat()))
 
 open(ROOT + r"\index.html", "w", encoding="utf-8").write(HTML)
 print("WROTE index.html", len(HTML), "bytes; logs:", len(logs), "cells:", len(cells_html))
