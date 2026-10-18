@@ -116,7 +116,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-bo
 .cg-weekdays{display:grid;grid-template-rows:20px repeat(7,var(--cell-size));font-size:10px;color:var(--ink-3);font-family:var(--font-mono)}
 .cg-weekday{display:flex;align-items:center}
 .cg-scroll{overflow-x:auto;padding-bottom:6px}
-.cg-grid{display:grid;grid-template-columns:repeat(57,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
+.cg-grid{display:grid;grid-template-columns:repeat(58,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size));gap:3px}
 .cg-month{grid-row:1;font-family:var(--font-mono);font-size:10px;color:var(--ink-3);align-self:end}
 .cg-cell{width:var(--cell-size);height:var(--cell-size);background:var(--cg-empty);border:none;border-radius:6px;padding:0;cursor:pointer;transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
 .cg-cell[data-level="1"]{background:var(--cg-fill);border:1.5px solid var(--ink);box-shadow:1.5px 1.5px 0 var(--shadow-ink)}
@@ -260,7 +260,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 
       <div class="hero-card">
         <span class="hero-label">最近一次 Codex 重置</span>
-        <span class="hero-figure" data-role="relative-time" data-datetime="2026-10-15T06:28:13.000Z"></span>
+        <span class="hero-figure" data-role="relative-time" data-datetime="2026-10-17T21:12:21.000Z"></span>
         <div class="reset-plea" data-mode="thanks">
           <div class="reset-plea-action">
             <button class="reset-plea-button" type="button" data-role="reset-plea-button" aria-label="求重置" title="求重置">
@@ -273,14 +273,14 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         </div>
         <div class="hero-footer">
           <p class="hero-sub">
-            <span data-role="absolute-time" data-datetime="2026-10-15T06:28:13.000Z">10月15日 14:28</span>
+            <span data-role="absolute-time" data-datetime="2026-10-17T21:12:21.000Z">10月18日 05:12</span>
           </p>
         </div>
       </div>
     </section>
 
     <dl class="stat-row">
-      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">62</dd></div>
+      <div class="stat-tile stat-tile--sun"><dt>重置次数</dt><dd class="mono">63</dd></div>
       <div class="stat-tile stat-tile--rose"><dt>平均重置间隔</dt><dd class="mono">6.4天</dd></div>
       <div class="stat-tile stat-tile--sky"><dt>最长等待</dt><dd class="mono">67.7天</dd></div>
     </dl>
@@ -316,7 +316,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <div class="cg-container">
           <div class="cg-weekdays" style="grid-template-rows:20px repeat(7,var(--cell-size))"><span class="cg-weekday" style="grid-row:2"></span><span class="cg-weekday" style="grid-row:3">周一</span><span class="cg-weekday" style="grid-row:4"></span><span class="cg-weekday" style="grid-row:5">周三</span><span class="cg-weekday" style="grid-row:6"></span><span class="cg-weekday" style="grid-row:7">周五</span><span class="cg-weekday" style="grid-row:8"></span></div>
           <div class="cg-scroll">
-            <div class="cg-grid" style="grid-template-columns:repeat(57,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
+            <div class="cg-grid" style="grid-template-columns:repeat(58,var(--cell-size));grid-template-rows:20px repeat(7,var(--cell-size))">
               <span class="cg-month" style="grid-column:1 / span 2;grid-row:1">9月</span>
           <span class="cg-month" style="grid-column:4 / span 3;grid-row:1">10月</span>
           <span class="cg-month" style="grid-column:8 / span 4;grid-row:1">11月</span>
@@ -330,7 +330,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           <span class="cg-month" style="grid-column:43 / span 3;grid-row:1">7月</span>
           <span class="cg-month" style="grid-column:47 / span 4;grid-row:1">8月</span>
           <span class="cg-month" style="grid-column:52 / span 3;grid-row:1">9月</span>
-          <span class="cg-month" style="grid-column:56 / span 1;grid-row:1">10月</span>
+          <span class="cg-month" style="grid-column:56 / span 2;grid-row:1">10月</span>
               <button type="button" class="cg-cell" data-level="0" data-date="2025-09-14" style="grid-column:1;grid-row:2" aria-label="2025-09-14：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2025-09-15" style="grid-column:1;grid-row:3" aria-label="2025-09-15：未重置"></button>
           <button type="button" class="cg-cell" data-level="0" data-date="2025-09-16" style="grid-column:1;grid-row:4" aria-label="2025-09-16：未重置"></button>
@@ -826,7 +826,14 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
           <button type="button" class="cg-cell" data-level="0" data-date="2026-10-14" style="grid-column:57;grid-row:5" aria-label="2026-10-14：未重置"></button>
           <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-10-15" style="grid-column:57;grid-row:6" title="搞定了" href="https://x.com/thsottiaux/status/2110618732666257557" target="_blank" rel="noopener noreferrer"></a>
           <button type="button" class="cg-cell" data-level="0" data-date="2026-10-16" style="grid-column:57;grid-row:7" aria-label="2026-10-16：未重置"></button>
-          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-17" style="grid-column:57;grid-row:8" aria-label="2026-10-17：未重置"></button>
+          <a class="cg-cell" data-level="1" data-reset-type="regular" data-date="2026-10-17" style="grid-column:57;grid-row:8" title="完成了" href="https://x.com/thsottiaux/status/2111566005684289735" target="_blank" rel="noopener noreferrer"></a>
+          <button type="button" class="cg-cell" data-level="0" data-date="2026-10-18" style="grid-column:58;grid-row:2" aria-label="2026-10-18：未重置"></button>
+          <span class="cg-cell cg-cell--future" style="grid-column:58;grid-row:3" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:58;grid-row:4" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:58;grid-row:5" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:58;grid-row:6" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:58;grid-row:7" aria-hidden="true"></span>
+          <span class="cg-cell cg-cell--future" style="grid-column:58;grid-row:8" aria-hidden="true"></span>
             </div>
           </div>
         </div>
@@ -839,6 +846,17 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <p class="section-sub">每次公告，都留有记录</p>
       </div>
       <ol class="log-list">
+    <li class="log-item" data-tweet-id="2111566005684289735">
+      <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
+      <div class="log-bubble">
+        <div class="log-item-meta">
+          <span class="log-item-time" data-role="relative-time" data-datetime="2026-10-17T21:12:21.000Z"></span>
+          <span class="log-item-abs" data-role="absolute-time" data-datetime="2026-10-17T21:12:21.000Z">2026年10月17日 21:12 UTC</span>
+        </div>
+        <p class="log-item-text" data-role="tweet-display-text">完成了</p>
+        <a class="log-item-link" href="https://x.com/thsottiaux/status/2111566005684289735" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
+      </div>
+    </li>
     <li class="log-item" data-tweet-id="2110618732666257557">
       <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
       <div class="log-bubble">
@@ -861,6 +879,14 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <a class="log-item-link" href="https://x.com/thsottiaux/status/2109873287853707513" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
       </div>
     </li>
+      </ol>
+      <details class="log-more">
+        <summary class="log-more-toggle">
+          <span class="log-more-label-closed">查看全部 63 次重置</span>
+          <span class="log-more-label-open">收起</span>
+          <span class="log-more-arrow" aria-hidden="true">&darr;</span>
+        </summary>
+        <ol class="log-list log-list--more" start="4">
     <li class="log-item" data-tweet-id="2109132167112782291">
       <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
       <div class="log-bubble">
@@ -872,14 +898,6 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         <a class="log-item-link" href="https://x.com/thsottiaux/status/2109132167112782291" target="_blank" rel="noopener noreferrer">在 X 查看 &rarr;</a>
       </div>
     </li>
-      </ol>
-      <details class="log-more">
-        <summary class="log-more-toggle">
-          <span class="log-more-label-closed">查看全部 62 次重置</span>
-          <span class="log-more-label-open">收起</span>
-          <span class="log-more-arrow" aria-hidden="true">&darr;</span>
-        </summary>
-        <ol class="log-list log-list--more" start="4">
     <li class="log-item" data-tweet-id="2108040921044639779">
       <img class="log-avatar" src="avatar.jpg" alt="" aria-hidden="true" width="44" height="44" />
       <div class="log-bubble">
@@ -1649,7 +1667,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
     </section>
 
     <footer class="foot">
-      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 2026-10-17</p>
+      <p>本页为 <a href="https://codex-resets.com/zh-CN" target="_blank" rel="noopener noreferrer">codex-resets.com</a> 的静态复刻快照 · 数据截至 2026-10-18</p>
     </footer>
   </main>
 </div>
